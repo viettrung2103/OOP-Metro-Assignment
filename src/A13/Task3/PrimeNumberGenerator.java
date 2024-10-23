@@ -16,8 +16,7 @@ public class PrimeNumberGenerator {
             if (first < 0 || second < 0) {
                 System.out.println("Both numbers need to be positive interger");
                 System.out.println("Type again");
-            }
-            if (first >= second) {
+            } else if (first >= second) {
                 System.out.println("second number must larger than first number");
                 System.out.println("Type again");
             } else {
