@@ -7,7 +7,7 @@ roots using the quadratic formula. Display the roots on the console.
 If the equation has no real roots, display the message "No real roots".
  */
 
-import java.awt.*;
+
 import java.util.Scanner;
 
 public class QuadraticEquation {
