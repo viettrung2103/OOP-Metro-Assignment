@@ -14,36 +14,60 @@ public class RemoveDuplicates {
         numArr =  new int[size];
         finalNumArray = new int[size];
 
+        // add check if user input 0 or not
+        boolean hasZero = false;
+
         System.out.println("Enter the integers into the array: ");
         for (int i = 0; i < size; i++){
             System.out.printf("Enter integer %d: ", i+1);
             value = Integer.parseInt(scanner.nextLine());
             numArr[i] = value;
         }
+
+        for (int i = 0; i < size; i++){
+            if (numArr[i] == 0){
+                hasZero = true;
+            }
+        }
+
         Arrays.sort(numArr);
+
         for (int num:numArr){
             System.out.print(num+" ");
         }
-        for (int i = 0, j = 0; i < size; i++){
+
+        for (int i = 0, j = 0; i < size; i++, j++){
             if (i == 0) {
                 finalNumArray[j] = numArr[i];
-                j++;
+
             }
             else {
                 if (numArr[i] != numArr[i-1]){
                     finalNumArray[j] = numArr[i];
-                    j++;
+
                 }
             }
         }
-        System.out.print("\n");
-        System.out.print("\n");
+        System.out.println();
+        int countZero = 0;
+
         System.out.println("The array without duplicates:");
-        for (int i = 0; i < size;i++){
-            if (i == 0 || finalNumArray[i] != 0){
-                System.out.print(finalNumArray[i] +" ");
+        for (int i = 0 ; i< size; i++ ) {
+            // check case if array has one or more than one 0
+            if (hasZero) {
+                if (finalNumArray[i] == 0) {
+                    if (countZero == 0) {
+                        System.out.print(finalNumArray[i] + " ");
+                        countZero++;
+                    }
+                } else {
+                    System.out.print(finalNumArray[i] + " ");
+                }
+            } else {
+                if (finalNumArray[i] != 0) {
+                    System.out.print(finalNumArray[i] + " ");
+                }
             }
         }
-//        System.out.printf("Array: " + numArr);
     }
 }
