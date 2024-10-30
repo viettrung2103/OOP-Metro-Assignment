@@ -1,10 +1,13 @@
-package Week2.A22;
+package Week2.A22.Task1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GrceryListManager {
 
     private ArrayList<String> groceryList = new ArrayList<>();
+//    private HashMap<String, Double> groceryList = new HashMap<>();
 
     public GrceryListManager() {
 //         this.groceryList =
@@ -13,7 +16,8 @@ public class GrceryListManager {
     public void addItem(String item) {
         if (!this.checkItem(item)) {
             System.out.println("Adding " + item + " to list..");
-            this.groceryList.add(item);
+            this.groceryList.add(item);  // array list
+//            this.groceryList.put(item, cost); // HashMap
         }
     }
 
@@ -24,7 +28,7 @@ public class GrceryListManager {
 
     public void displayRemoveItem(String item) {
         if (!checkItem(item)) {
-            System.out.println("\""+item+"\" does not exist in the list");
+            System.out.println("\"" + item + "\" does not exist in the list");
         } else {
             removeItem(item);
             System.out.println("Remove " + "\"" + item + "\" from the list...");
@@ -32,6 +36,14 @@ public class GrceryListManager {
     }
 
     public void displayList() {
+        //HashMap
+//        int index = 1;
+//        for (Map.Entry<String, Double> product : groceryList.entrySet()) {
+//            String name = product.getKey();
+//            Double cost = product.getValue();
+//            System.out.println(index + ". " + name + " - " + cost + " eurs");
+//        }
+        //ArrayList
         for (int i = 0; i < this.groceryList.size(); i++) {
             System.out.println((i + 1) + ". " + this.groceryList.get(i));
 
@@ -43,9 +55,20 @@ public class GrceryListManager {
     }
 
     public boolean checkItem(String item) {
-        return this.groceryList.contains(item);
+        return this.groceryList.contains(item); // ArrayList
+//        return this.groceryList.containsKey(item); // HashMap
 
     }
+
+//    public double totalCost() {
+//        double sum = 0;
+//        for (Map.Entry<String, Double> product : groceryList.entrySet()) {
+//            String name = product.getKey();
+//            double cost = product.getValue();
+//            sum += cost;
+//        }
+//        return sum;
+//    }
 
 
     public static void main(String[] args) {
