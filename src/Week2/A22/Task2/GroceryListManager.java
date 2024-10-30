@@ -3,13 +3,13 @@ package Week2.A22.Task2;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GrceryListManager {
+public class GroceryListManager {
 
     //    private ArrayList<String> groceryList = new ArrayList<>();
     private HashMap<String, Double> groceryList = new HashMap<>();
     private double sum;
 
-    public GrceryListManager() {
+    public GroceryListManager() {
 //         this.groceryList =
         this.sum = 0;
     }
@@ -42,6 +42,7 @@ public class GrceryListManager {
             String name = product.getKey();
             Double cost = product.getValue();
             System.out.println(index + ". " + name + " - " + cost + " eurs");
+            index++;
         }
 //        for (int i = 0; i < this.groceryList.size(); i++) {
 //            System.out.println((i + 1) + ". " + this.groceryList.get(i));
@@ -79,24 +80,24 @@ public class GrceryListManager {
 
 
     public static void main(String[] args) {
-        GrceryListManager system = new GrceryListManager();
+        GroceryListManager system = new GroceryListManager();
         system.addItem("Apple", 10);
         system.addItem("Orange", 20);
         system.addItem("Milk", 5);
         system.addItem("Bread", 6);
-        System.out.println("");
+        System.out.println();
         System.out.println("Grocery List:");
         system.displayList();
         system.displaySum();
-        System.out.println("");
+        System.out.println();
         String checkItem = "Milk";
         String checkNonExist = "Iphone";
         system.displayCheckItemStr(checkItem);
         system.displayCheckItemStr(checkNonExist);
-        System.out.println("");
+        System.out.println();
         system.displayRemoveItem(checkItem);
         system.displayRemoveItem(checkNonExist);
-        System.out.println("");
+        System.out.println();
         System.out.println("Update Grocery List:");
         system.displayList();
         system.displaySum();

@@ -1,15 +1,13 @@
 package Week2.A22.Task1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class GrceryListManager {
+public class GroceryListManager {
 
     private ArrayList<String> groceryList = new ArrayList<>();
 //    private HashMap<String, Double> groceryList = new HashMap<>();
 
-    public GrceryListManager() {
+    public GroceryListManager() {
 //         this.groceryList =
     }
 
@@ -72,7 +70,7 @@ public class GrceryListManager {
 
 
     public static void main(String[] args) {
-        GrceryListManager system = new GrceryListManager();
+        GroceryListManager system = new GroceryListManager();
         system.addItem("Apple");
         system.addItem("Orange");
         system.addItem("Milk");
