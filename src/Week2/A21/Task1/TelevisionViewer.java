@@ -4,7 +4,7 @@ public class TelevisionViewer {
     public static void main(String[] args) {
         Television myTV = new Television();
         myTV.setChannel(1);
-
+        System.out.println("tv is on" +myTV.isOn());
         for (int day = 1; day <= 10; day++) {
             System.out.println("Woke up, day " + day);
 
