@@ -7,6 +7,9 @@ public class GroceryListManager {
 
     //    private ArrayList<String> groceryList = new ArrayList<>();
     private HashMap<String, Double> groceryList = new HashMap<>();
+    //  [Apple, Apple, Bread]
+    //  [1,2,3]
+
     private double sum;
 
     public GroceryListManager() {
@@ -18,7 +21,7 @@ public class GroceryListManager {
         if (!this.checkItem(item)) {
             System.out.println("Adding " + item + " to list..");
 //            this.groceryList.add(item);  // array list
-            this.groceryList.put(item, cost); // HashMap
+            this.groceryList.put(item, cost); // HashMap // can rewrite without check
         }
     }
 
