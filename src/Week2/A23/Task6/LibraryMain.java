@@ -9,6 +9,8 @@ public class LibraryMain {
         Book book2 = new Book("Data Structures and Algorithms", "Jane Doe", 2018);
         Book book3 = new Book("Data Structures and Algorithms123", "Jane Doe", 2018);
         Book book4 = new Book("The Art of Fiction", "Alice Johnson", 2019);
+        User user1 = new User("Trung", 30);
+
 
         library.addBook(book1);
         library.addBook(book2);
@@ -23,32 +25,30 @@ public class LibraryMain {
 
         String existingTitle = "Introduction to Java Programming";
         String nonExistingTitle = "Title1";
-        library.borrowBook(existingTitle);
-        library.borrowBook(nonExistingTitle);
-        library.borrowBook(existingTitle);
 
-        Book nonExistBook = new Book("Title1", "Author1", 1111);
-        library.returnBook(book1);
-        library.returnBook(nonExistBook);
 
         library.isBookAvailable(existingTitle);
         library.isBookAvailable(nonExistingTitle);
+
+        library.getAverageBookRating();
+        library.displayMostReviewBook();
 
         book1.addRatingAndReview("Good book", 4.0);
         book1.addRatingAndReview("Normal book", 3.8);
         book2.addRatingAndReview("Excellent book", 5.0);
         book2.addRatingAndReview("Supper good book", 4.5);
-//        book1.setAverageRating();
-//        book2.setAverageRating();
+
 
         library.getAverageBookRating();
-        Book mostReviewBook = library.getMostReviewedBook();
-        if (mostReviewBook != null) {
-            System.out.println("The Book with highest reviews:");
-            System.out.println(mostReviewBook);
-        } else {
-            System.out.println("There is no reviews in the library");
-        }
+        library.displayMostReviewBook();
+
+        library.borrowBook(user1, existingTitle);
+        library.borrowBook(user1, nonExistingTitle);
+        library.borrowBook(user1, existingTitle);
+
+        Book nonExistBook = new Book("Title1", "Author1", 1111);
+        library.returnBook(user1, book1);
+        library.returnBook(user1, nonExistBook);
 
     }
 

@@ -45,8 +45,8 @@ Book {
         if (rating > 5) {
             rating = 5;
         }
-        if (rating < 0) {
-            rating = 0;
+        if (rating < 1) {
+            rating = 1;
         }
         this.ratings.add(rating);
     }

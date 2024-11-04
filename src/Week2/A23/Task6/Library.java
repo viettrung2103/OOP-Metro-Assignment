@@ -38,13 +38,14 @@ public class Library {
 //        return foundBook;
     }
 
-    public Book borrowBook(String title) {
-        System.out.println("Borrow book \"" + title + "\" :");
+    public Book borrowBook(User user, String title) {
+        System.out.println(user.getName() + " borrows book \"" + title + "\" :");
         for (Book book : this.books) {
             if (book.getTitle().equals(title)) {
                 if (book.getIsAvailable()) {
                     System.out.println("Successfully");
                     book.setIsAvailableOnOff();
+                    user.borrowBook(book);
                     return book;
                 } else {
                     System.out.println("Fail. The book \"" + title + "\" is already borrowed.");
@@ -58,7 +59,7 @@ public class Library {
         return null;
     }
 
-    public void returnBook(Book book) {
+    public void returnBook(User user, Book book) {
 //        boolean isFound = false;
         for (Book curBook : this.books) {
             if (curBook.getTitle().equals(book.getTitle())) {
@@ -67,8 +68,13 @@ public class Library {
                     System.out.println("Are you sure you return to the right library.");
                     return;
                 } else {
-                    curBook.setIsAvailableOnOff();
-                    System.out.println("Thank you for return Book \"" + book.getTitle() + "\" to us.");
+                    Book returnedBook = user.returnBook(book.getTitle());
+                    if (returnedBook != null) {
+                        curBook.setIsAvailableOnOff();
+                        System.out.println("Thank you for return Book \"" + book.getTitle() + "\" to us.");
+                    } else {
+                        System.out.println("User \"" + user.getName() + "\" did not borrow the book \"" + book.getTitle());
+                    }
                     return;
 
                 }
@@ -98,6 +104,7 @@ public class Library {
     public void getAverageBookRating() {
 //        double averageSum = 0;
         if (!this.books.isEmpty()) {
+            System.out.println("List of books and their average ratings:");
             for (Book book : this.books) {
                 book.setAverageRating();
                 System.out.println(book);
@@ -129,9 +136,15 @@ public class Library {
         return this.mostReviewedBook;
     }
 
-//    public void displayMostReviewBook() {
-//
-//    }
+    public void displayMostReviewBook() {
+        Book mostReviewBook = this.getMostReviewedBook();
+        if (mostReviewBook != null) {
+            System.out.println("The Book with highest reviews:");
+            System.out.println(mostReviewBook);
+        } else {
+            System.out.println("There is no reviews in the library");
+        }
+    }
 
 
 }
