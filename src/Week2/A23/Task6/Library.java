@@ -1,4 +1,4 @@
-package Week2.A23.Task5;
+package Week2.A23.Task6;
 
 import java.util.ArrayList;
 
@@ -98,7 +98,6 @@ public class Library {
     public void getAverageBookRating() {
 //        double averageSum = 0;
         if (!this.books.isEmpty()) {
-            System.out.println("List of books and their average ratings:");
             for (Book book : this.books) {
                 book.setAverageRating();
                 System.out.println(book);
@@ -130,15 +129,9 @@ public class Library {
         return this.mostReviewedBook;
     }
 
-    public void displayMostReviewBook() {
-        Book mostReviewBook = this.getMostReviewedBook();
-        if (mostReviewBook != null) {
-            System.out.println("The Book with highest reviews:");
-            System.out.println(mostReviewBook);
-        } else {
-            System.out.println("There is no reviews in the library");
-        }
-    }
+//    public void displayMostReviewBook() {
+//
+//    }
 
 
 }

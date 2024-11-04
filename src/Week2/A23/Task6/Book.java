@@ -1,4 +1,4 @@
-package Week2.A23.Task5;
+package Week2.A23.Task6;
 
 import java.util.ArrayList;
 
@@ -45,8 +45,8 @@ Book {
         if (rating > 5) {
             rating = 5;
         }
-        if (rating < 1) {
-            rating = 1;
+        if (rating < 0) {
+            rating = 0;
         }
         this.ratings.add(rating);
     }

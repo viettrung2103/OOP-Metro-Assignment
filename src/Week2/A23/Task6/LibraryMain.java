@@ -1,4 +1,4 @@
-package Week2.A23.Task5;
+package Week2.A23.Task6;
 
 public class LibraryMain {
     public static void main(String[] args) {
@@ -34,9 +34,6 @@ public class LibraryMain {
         library.isBookAvailable(existingTitle);
         library.isBookAvailable(nonExistingTitle);
 
-        library.getAverageBookRating();
-        library.displayMostReviewBook();
-
         book1.addRatingAndReview("Good book", 4.0);
         book1.addRatingAndReview("Normal book", 3.8);
         book2.addRatingAndReview("Excellent book", 5.0);
@@ -45,7 +42,13 @@ public class LibraryMain {
 //        book2.setAverageRating();
 
         library.getAverageBookRating();
-        library.displayMostReviewBook();
+        Book mostReviewBook = library.getMostReviewedBook();
+        if (mostReviewBook != null) {
+            System.out.println("The Book with highest reviews:");
+            System.out.println(mostReviewBook);
+        } else {
+            System.out.println("There is no reviews in the library");
+        }
 
     }
 
