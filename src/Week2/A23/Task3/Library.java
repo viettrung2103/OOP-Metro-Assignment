@@ -1,4 +1,4 @@
-package Week2.A23.Task2;
+package Week2.A23.Task3;
 
 import java.util.ArrayList;
 
@@ -75,5 +75,21 @@ public class Library {
         System.out.println("Are you sure you return the correct book?");
     }
 
+    public boolean isBookAvailable(String title) {
+        System.out.println("Is the book \"" + title + "\" available?");
+        for (Book book : this.books) {
+            if (book.getTitle().equals(title)) {
+                if (book.getIsAvailable()) {
+                    System.out.println("Yes. It is available");
+                    return true;
+                } else {
+                    System.out.println("No. It is not available");
+                    return false;
+                }
+            }
+        }
+        System.out.println("The book \"" + title + "\" does not exist in our system.");
+        return false;
+    }
 
 }
