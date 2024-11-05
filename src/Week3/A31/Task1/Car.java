@@ -1,4 +1,4 @@
-package Week3.A32;
+package Week3.A31.Task1;
 
 /* Define a class Car (convention capitalizes class names).
  * Car is public (as classes usually are, more on this later).
@@ -73,7 +73,7 @@ public class Car {
         return typeName;
     }
 
-    public void fillTank() {
+    void fillTank() {
         gasolineLevel = this.gasolineCapacity;
     }
 

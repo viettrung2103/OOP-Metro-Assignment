@@ -1,4 +1,4 @@
-package Week3.A32;
+package Week3.A31.Task2;
 
 public class Bus extends Car {
     private int customers;

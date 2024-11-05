@@ -1,4 +1,4 @@
-package Week3.A33;
+package Week3.A31.Task4;
 
 public class Shape {
     //    private int side;
@@ -25,6 +25,6 @@ public class Shape {
 
     @Override
     public String toString() {
-        return"Area of " + this.type + " with";
+        return"Area of " + this.type;
     }
 }

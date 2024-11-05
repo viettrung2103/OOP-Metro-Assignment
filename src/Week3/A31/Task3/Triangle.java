@@ -1,4 +1,4 @@
-package Week3.A33;
+package Week3.A31.Task3;
 
 public class Triangle extends Shape {
     private double height;

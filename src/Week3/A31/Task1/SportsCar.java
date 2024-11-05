@@ -1,4 +1,4 @@
-package Week3.A32;
+package Week3.A31.Task1;
 
 public class SportsCar extends Car {
     public SportsCar(String typeName, double gasolineCapacity, double topSpeed) {
