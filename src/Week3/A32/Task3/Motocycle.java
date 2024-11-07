@@ -5,8 +5,8 @@ public class Motocycle extends AbstractVehicle {
 //    private String fuel;
     private String color;
 
-    public Motocycle(String type, String fuel, String color) {
-        super(type, fuel);
+    public Motocycle(String type, String fuel, String color, double efficiency) {
+        super(type, fuel,efficiency);
         this.color = color;
         this.isElecTric = false;
     }
