@@ -20,13 +20,13 @@ public class Bus implements Vehicle {
 
     @Override
     public void stop() {
-        System.out.println(this.type + " is stopping");
+        System.out.println(this.type + " is stopping...");
     }
 
     @Override
     public void getInfo() {
         System.out.println("Type: " + this.type);
-        System.out.println("Fuel: " + this.type);
+        System.out.println("Fuel: " + this.fuel);
         System.out.println("Capacity: " + this.passengers);
     }
 }
