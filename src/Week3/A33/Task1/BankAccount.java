@@ -18,11 +18,16 @@ public class BankAccount {
     }
 
     public void deposit(int money) {
-        this.balance += money;
+    if (money >0){
+            this.balance += money;
+        }
     }
 
     public void withdraw(int money) {
-        this.balance -= money;
+        if ( money > 0 && money <= this.balance){
+            this.balance -= money;
+
+        }
     }
 
     public int getBalance() {
