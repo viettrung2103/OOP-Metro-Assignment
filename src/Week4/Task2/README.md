@@ -1,0 +1,113 @@
+### AI-Assisted Calculator
+## Description
+In this task, you will implement a simple calculator that can add positive numbers. The calculator should have the following functionalities:
+- A method to reset the calculator to zero.
+- A method to add an integer to the calculator. The method should throw an exception if a negative number is added.
+- A method to return the current value of the calculator.
+
+## Codebase:
+
+```
+package Week4.Task2;
+
+public class Calculator {
+    private int sum;
+
+    public Calculator() {
+        this.sum = 0;
+    }
+
+    // Method to reset the calculator to zero
+    public void reset() {
+        this.sum = 0;
+    }
+
+    // Method to add an integer to the calculator
+    // throw exception when add negative number
+    public void add(int number) {
+        if (number < 0) {
+            throw new IllegalArgumentException("Negative numbers are not allowed");
+        }
+        this.sum += number;
+    }
+
+    // Method to return the current value of the calculator
+    public int getValue() {
+        return this.sum;
+    }
+
+    public static void main(String[] args) {
+        Calculator calculator = new Calculator();
+        calculator.add(5);
+        calculator.add(10);
+        System.out.println("Current sum: " + calculator.getValue()); // Output: Current sum: 15
+        calculator.reset();
+        System.out.println("After reset: " + calculator.getValue()); // Output: After reset: 0
+
+        try {
+            calculator.add(-5); // This will throw an exception
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage()); // Output: Negative numbers are not allowed
+        }
+    }
+} 
+```
+## Explanation
+The Calculator class is a simple model in the MVC pattern that performs basic arithmetic operations. Here is a breakdown of how the code works:  
+#### Class Definition
+The Calculator class has a private field sum to store the current sum of integers.  
+#### Constructor
+The constructor initializes the sum to zero.
+```
+public Calculator() {
+    this.sum = 0;
+}
+```
+#### Methods
+1. reset(): This method resets the sum to zero.
+```
+angular2html
+public void reset() {
+    this.sum = 0;
+}
+```
+2. add(int number): This method adds a positive integer to the sum. If a negative integer is passed, it throws an IllegalArgumentException.
+```
+public void add(int number) {
+    if (number < 0) {
+        throw new IllegalArgumentException("Negative numbers are not allowed");
+    }
+    this.sum += number;
+}
+```
+3. getValue(): This method returns the current value of the sum.
+```
+public int getValue() {
+    return this.sum;
+}
+
+```
+#### Main Method
+The main method demonstrates how to use the Calculator class:
+1. Create an instance of Calculator.
+2. Add positive integers to the calculator.
+3. Print the current sum.
+4. Reset the calculator and print the sum again.
+5. Attempt to add a negative integer and catch the exception.
+```
+public static void main(String[] args) {
+    Calculator calculator = new Calculator();
+    calculator.add(5);
+    calculator.add(10);
+    System.out.println("Current sum: " + calculator.getValue()); // Output: Current sum: 15
+    calculator.reset();
+    System.out.println("After reset: " + calculator.getValue()); // Output: After reset: 0
+
+    try {
+        calculator.add(-5); // This will throw an exception
+    } catch (IllegalArgumentException e) {
+        System.err.println(e.getMessage()); // Output: Negative numbers are not allowed
+    }
+}
+```
+This code ensures that only positive integers are added to the sum, and it handles exceptions for negative integers appropriately.
