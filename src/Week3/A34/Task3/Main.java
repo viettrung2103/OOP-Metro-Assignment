@@ -12,30 +12,41 @@ public class Main {
 
 
         File f = new File(FILENAME);
-        Enrollmment enrollmment = new Enrollmment(student1, course1, "12.11.2024'");;
+        Enrollment enrollment = new Enrollment(student1, course1, "12.11.2024'");
+        ;
 
         // if there is file, read from file deserialize
         if (f.exists() & f.isFile()) {
-            try (
-                    FileInputStream inputStream = new FileInputStream(FILENAME);
-                    ObjectInputStream objects = new ObjectInputStream(inputStream);
-            ) {
-                enrollmment = (Enrollmment) objects.readObject();
-            } catch (Exception e) {
-                System.err.println("Fail to read enrollment: " + e);
-            }
+            enrollment = deSerializeEnrollment(FILENAME);
+            System.out.println(enrollment);
+
         } else {
 
             // if there is no file, serialize and write to file
-            try (
-                    FileOutputStream outputStream = new FileOutputStream(FILENAME);
-                    ObjectOutputStream objects = new ObjectOutputStream(outputStream);
-            ) {
-                objects.writeObject(enrollmment);
-            } catch (Exception e) {
-                System.err.println("Fail to writing enrollment: " + e);
-            }
+            serializeEnrollment(enrollment, FILENAME);
         }
-//        System.out.println("Enrollment: " + enrollmment);
+
+    }
+
+    private static void serializeEnrollment(Enrollment enrollment, String filename) {
+        try (
+                FileOutputStream outputStream = new FileOutputStream(filename);
+                ObjectOutputStream objects = new ObjectOutputStream(outputStream);
+        ) {
+            objects.writeObject(enrollment);
+        } catch (Exception e) {
+            System.err.println("Fail to writing enrollment: " + e);
+        }
+    }
+
+    private static Enrollment deSerializeEnrollment(String filename) {
+        try (FileInputStream fis = new FileInputStream(filename);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            return (Enrollment) ois.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Failed to read enrollment: " + e.getMessage());
+            return null;
+        }
     }
 }

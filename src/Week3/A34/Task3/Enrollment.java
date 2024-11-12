@@ -2,18 +2,18 @@ package Week3.A34.Task3;
 
 import java.io.Serializable;
 
-public class Enrollmment implements Serializable {
+public class Enrollment implements Serializable {
     private Student student;
     private Course course;
     private String enrollmentDate;
 
-    public Enrollmment(Student student, Course course, String enrollmentDate) {
+    public Enrollment(Student student, Course course, String enrollmentDate) {
         this.student = student;
         this.course = course;
         this.enrollmentDate = enrollmentDate;
         student.enroll(course);
         course.addStudent(student);
-        System.out.println(this);
+//        System.out.println(this);
     }
 
     public Student getStudent() {
