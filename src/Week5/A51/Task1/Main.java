@@ -1,4 +1,4 @@
-package Week5.Task1;
+package Week5.A51.Task1;
 
 
 public class Main {
