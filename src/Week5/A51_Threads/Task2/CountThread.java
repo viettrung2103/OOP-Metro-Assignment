@@ -1,4 +1,4 @@
-package Week5.A51.Task2;
+package Week5.A51_Threads.Task2;
 
 import java.util.ArrayList;
 

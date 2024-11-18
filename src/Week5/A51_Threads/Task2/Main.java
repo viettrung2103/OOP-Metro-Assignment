@@ -1,4 +1,4 @@
-package Week5.A51.Task2;
+package Week5.A51_Threads.Task2;
 
 public class Main {
     public static void main(String[] args) {
