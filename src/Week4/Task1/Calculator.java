@@ -1,4 +1,4 @@
-package Week4.Task2;
+package Week4.Task1;
 
 public class Calculator {
     private int sum;
