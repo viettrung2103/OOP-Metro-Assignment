@@ -1,4 +1,4 @@
-package Week5.A52_Synchronization;
+package Week5.A52_Synchronization.Task1;
 
 public class Reservation {
     private int availableTickets;
