@@ -12,14 +12,14 @@ public class Main {
         t1.start();
         t2.start();
 
-        try {
-            // join() == Promise.all()
-            t1.join();
-            t2.join();
-            //
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+//        try {
+//            // join() == Promise.all()
+//            t1.join();
+//            t2.join();
+//            //
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
         System.out.println("Print complete");
     }
 

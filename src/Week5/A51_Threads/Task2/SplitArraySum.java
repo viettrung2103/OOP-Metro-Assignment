@@ -8,11 +8,13 @@ public class SplitArraySum {
     private ArrayList<Integer> numList;
     private ArrayList<CountThread> countThreads;
     private int finalSum;
+    private int arraySize;
 
-    public SplitArraySum() {
+    public SplitArraySum(int arraySize) {
         cores = this.findNumCores();
         numList = createNumList();
         countThreads = new ArrayList<>();
+        this.arraySize = arraySize;
         finalSum = 0;
     }
 
@@ -23,8 +25,8 @@ public class SplitArraySum {
     public ArrayList<Integer> createNumList() {
         ArrayList<Integer> list = new ArrayList<>();
         Random numGenerator = new Random();
-        for (int i = 0; i <= 100000; i++) {
-            int num = numGenerator.nextInt(100000);
+        for (int i = 0; i < this.arraySize; i++) {
+            int num = numGenerator.nextInt(this.arraySize) + 1; // Ensure bound is positive
             list.add(num);
         }
         return list;

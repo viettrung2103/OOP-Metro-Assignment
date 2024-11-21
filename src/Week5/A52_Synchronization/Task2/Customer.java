@@ -1,6 +1,7 @@
 package Week5.A52_Synchronization.Task2;
 
-public class Customer implements Runnable {
+//public class Customer implements Runnable {
+public class Customer extends Thread {
     private String name;
     private SafeArrayList safeList;
 
@@ -29,5 +30,9 @@ public class Customer implements Runnable {
         }
     }
 
+    public void add() {
+        this.safeList.add(this.name);
+        System.out.println(this.name + " added to the list. size now is. " + this.safeList.size());
+    }
 
 }
