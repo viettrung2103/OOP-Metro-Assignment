@@ -75,10 +75,10 @@ public class DictionaryView extends Application {
         return this.controller;
     }
 
-    public void setController(DictionaryController controller){
-        this.controller = controller;
-        System.out.println("set Controller" +this.controller);
-    }
+//    public void setController(DictionaryController controller){
+//        this.controller = controller;
+//        System.out.println("set Controller" +this.controller);
+//    }
 
 
     public void init() {
