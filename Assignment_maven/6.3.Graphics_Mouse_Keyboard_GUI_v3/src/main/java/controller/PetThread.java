@@ -24,12 +24,16 @@ public class PetThread extends Thread {
                 // calcuate direction vector
                 double dx = mouseX - pet.getX();
                 double dy = mouseY - pet.getY();
+
                 double distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < 1) {
                     dx = 0;
                     dy = 0;
                 } else {
+                    // normalize the vector, to find the direction vector
+                    // time the speed to find the corresponding speed
+                    // the further, the faster it will go
                     dx = (dx / distance) * pet.getSpeed();
                     dy = (dy / distance) * pet.getSpeed();
                 }
