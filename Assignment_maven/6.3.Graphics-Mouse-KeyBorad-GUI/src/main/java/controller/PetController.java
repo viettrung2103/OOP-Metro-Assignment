@@ -18,9 +18,7 @@ public class PetController {
         this.gridSize = 20;
     }
 
-//    public setPetPosition(int x, int y){
-//
-//    }
+
 
     public int getPetViewX() {
         return this.pet.getX() * PetView.getCELLSIZE();
@@ -30,11 +28,7 @@ public class PetController {
         return this.pet.getY() * PetView.getCELLSIZE();
     }
 
-//    public checkMouseMovable(double mouseX, double mouseY) {
-//        int mousePosX = this.mapFromPixelToGrid(mouseX);
-//        int mousePosY = this.mapFromPixelToGrid(mouseY);
-//
-//    }
+
 
     public int getGridSize() {
         return this.gridSize;

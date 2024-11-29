@@ -29,35 +29,5 @@ public class Pet extends Point {
             }
         }
     }
-
-//    public synchronized void move(Point anotherPoint) {
-//        if (this.isMovable && this.distance(anotherPoint) != 0) {
-//            System.out.println("Is moving");
-//            if (this.getX() != anotherPoint.getX()) {
-//                if (this.getX() < anotherPoint.getX()) {
-//                    int x = this.getX() + this.speed;
-////                    this.setX(this.speed);
-//                    this.setX(x);
-//                } else {
-////                    this.getX() -= this.speed;
-//                    int x = this.getX() - this.speed;
-////                    this.setY(this.speed);
-//                    this.setX(x);
-//                }
-//            }
-////                this.setX(this.speed);
-//            if (this.getY() != anotherPoint.getY()) {
-//                if (this.getY() < anotherPoint.getY()) {
-////                    this.getY() += this.speed;
-//                    int y = this.getY() + this.speed;
-//                    this.setY(y);
-//                } else {
-//                    int y = this.getY() - this.speed;
-//                    this.setY(y);
-////                    this.getY() -= this.speed;
-//                }
-//            }
-//        }
-//    }
 }
 
