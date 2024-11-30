@@ -20,6 +20,12 @@ public class Note {
         this.content = content;
     }
 
+    public Note(Note other) {
+        this.id = other.id;
+        this.title = other.title;
+        this.content = other.content;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

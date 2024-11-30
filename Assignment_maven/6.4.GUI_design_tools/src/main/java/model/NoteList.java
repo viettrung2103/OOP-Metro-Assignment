@@ -1,6 +1,10 @@
 package model;
 
+import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class NoteList {
     public HashMap<Integer, Note> notes;
@@ -8,15 +12,6 @@ public class NoteList {
     public NoteList() {
         this.notes = new HashMap<>();
     }
-
-
-//    public void addNote(String title, String content) {
-//        Note newNote = new Note(title, content);
-//        int id = newNote.getId();
-//        System.out.println(newNote + "is added.");
-//        this.notes.put(id, newNote);
-//    }
-
 
     public void addNote(String idStr, String title, String content) {
         Note newNote;
@@ -62,4 +57,19 @@ public class NoteList {
         System.out.println("Note not found! Cannot remove");
         return null;
     }
+
+    public int size() {
+        return this.notes.size();
+    }
+
+    public ArrayList<Note> copyList() {
+        ArrayList<Note> newNote = new ArrayList<>();
+        for (Map.Entry<Integer, Note> entry : this.notes.entrySet()) {
+            Note note = entry.getValue();
+            newNote.add(note);
+        }
+        return newNote;
+    }
+
+
 }
