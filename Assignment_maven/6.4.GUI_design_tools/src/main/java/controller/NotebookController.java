@@ -118,4 +118,18 @@ public class NotebookController {
         }
     }
 
+    public TextArea getTitleInput() {
+        return this.titleInput;
+    }
+
+    public TextField getContentInput() {
+        return this.contentInput;
+    }
+
+    public Label getIdLabel() {
+        return this.idLabel;
+    }
+    public Button getUpsertBtn(){
+        return this.upsertBtn;
+    }
 }

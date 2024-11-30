@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -70,7 +71,7 @@ public class NotebookUI extends Application {
 //            this.noteGrid.addRow(EXTRAROW, new Text(""));
             // addRow() method first parameter is the idx row where we want to add the next row after it
 //            System.out.println("Before adding row: columns = " + this.noteGrid.getColumnCount() + ", rows = " + this.noteGrid.getRowCount());
-            this.noteGrid.addColumn(this.rowCounts-1, new Text(""));
+            this.noteGrid.addColumn(this.rowCounts - 1, new Text(""));
 //            System.out.println("After adding row: columns = " + this.noteGrid.getColumnCount() + ", rows = " + this.noteGrid.getRowCount());
             int newCollumnCount = this.noteGrid.getColumnCount();
             int newRowCount = this.noteGrid.getRowCount();
@@ -81,19 +82,29 @@ public class NotebookUI extends Application {
     }
 
     public void renderNoteView(Note note, int column, int row) {
-        Label noteLabel = new Label(note.getTitle());
-        noteLabel.ad
-        GridPane.setHalignment(noteLabel, HPos.CENTER);
-        GridPane.setHalignment(noteLabel, HPos.CENTER);
+        Button noteBtn = new Button(note.getTitle());
+        String title = note.getTitle();
+        String content = note.getContent();
+        String idStr = "" + note.getId();
+        System.out.println("#" + idStr + " " + title + " - " + content);
+
+        noteBtn.setOnAction(event -> {
+            this.controller.getTitleInput().setText(title);
+            this.controller.getContentInput().setText(content);
+            this.controller.getIdLabel().setText(idStr);
+            this.controller.getUpsertBtn().setText("Edit");
+        });
+
+        GridPane.setHalignment(noteBtn, HPos.CENTER);
+        GridPane.setHalignment(noteBtn, HPos.CENTER);
         //grid.add (node, collumn, row)
-        this.noteGrid.add(noteLabel, column, row);
+        this.noteGrid.add(noteBtn, column, row);
     }
 
     public void updateView(Note note) {
         Label newNoteView = new Label(note.getTitle());
         System.out.println();
     }
-
 
 
 }

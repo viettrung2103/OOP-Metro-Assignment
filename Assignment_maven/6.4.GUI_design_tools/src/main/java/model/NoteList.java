@@ -17,8 +17,8 @@ public class NoteList {
         Note newNote;
         int id;
         if (!idStr.equals("")) {
-            id = Integer.getInteger(idStr);
-            newNote = new Note(Integer.getInteger(idStr), title, content);
+            id = Integer.parseInt(idStr);
+            newNote = new Note(id, title, content);
             System.out.println("Adding new note " + newNote);
         } else {
 

@@ -20,6 +20,7 @@ public class Note {
         this.content = content;
     }
 
+    // to copy, might not need
     public Note(Note other) {
         this.id = other.id;
         this.title = other.title;
