@@ -1,11 +1,11 @@
 package entity;
 
 public class Currency {
-    private String name;
+    private String abbrName;
     private double rate; // from usd to other rate
 
     public Currency(String name, double rate) {
-        this.name = name;
+        this.abbrName = name;
         this.rate = rate;
     }
 
@@ -22,13 +22,13 @@ public class Currency {
         this.rate = newRate;
     }
 
-    public String getName() {
-        return this.name;
+    public String getAbbrName() {
+        return this.abbrName;
     }
 
     @Override
     public String toString() {
-        return this.name;
+        return this.abbrName +" : "+this.rate;
     }
 
 

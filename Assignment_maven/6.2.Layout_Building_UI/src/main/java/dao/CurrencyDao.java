@@ -9,12 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CurrencyDao {
-//    CurrencyApp currencyApp;
-//
-//    public CurrencyDao(){
-////        this.currencyApp = new CurrencyApp();
-//    }
-
     public Map<String, Currency> getAllCurrencies() {
         Connection connection = MariaDbConnection.getConnection();
         String sql = "SELECT abbreviation, rate FROM currency";
@@ -42,7 +36,7 @@ public class CurrencyDao {
 
         String name = null;
         double rate = 0.0;
-        int count = 1;
+        int count = 0;
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -73,11 +67,11 @@ public class CurrencyDao {
         try {
 
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, currency.getName());
+            ps.setString(1, currency.getAbbrName());
             ps.setDouble(2, currency.getRate());
 
             ps.executeUpdate();
-
+ 
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -42,4 +42,10 @@ public class CurrencyApp {
     public void setConvertedCurrency(Currency convertedCurrency) {
         this.convertedCurrency = convertedCurrency;
     }
+
+//    public double convertWithDB(double inputValue,Currency baseCurrency,Currency toCurrency){
+//        double baseRate = baseCurrency.getRate();
+//        double toRate = toCurrency.getRate();
+////        double result =
+//    }
 }

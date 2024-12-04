@@ -3,6 +3,7 @@ package controller;
 import dao.CurrencyDao;
 import entity.Currency;
 import entity.CurrencyApp;
+import javafx.application.Platform;
 import view.CurrencyGUI;
 
 import java.util.HashMap;
@@ -21,8 +22,8 @@ public class CurrencyController {
         this.initiate();
     }
 
-    public void initiate(){
-        HashMap<String,Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.getAllCurrencies();
+    public void initiate() {
+        HashMap<String, Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.getAllCurrencies();
         this.currencyApp.setCurrencyList(currencyList);
     }
 
@@ -41,6 +42,24 @@ public class CurrencyController {
 
         double result = this.currencyApp.convert(value, baseCurrency, convertedCurrency);
         return result;
+    }
+
+    //start  thread
+    public void startConvertComputation(double inputValue, String baseCurrencyStr, String toCurrencyStr) {
+        new Thread(() -> {
+            Currency baseCurrency = this.currencyDao.getCurrency(baseCurrencyStr);
+            Currency toCurrency = this.currencyDao.getCurrency(toCurrencyStr);
+            double result = baseCurrency.convert(inputValue, toCurrency);
+            double resultOneUnit = baseCurrency.convert(1, toCurrency);
+            System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
+            Platform.runLater(() -> {
+                        this.gui.displayConvertedResult(result, baseCurrencyStr, toCurrencyStr);
+                        this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+                    }
+            );
+        }
+        ).start();
+
     }
 
 

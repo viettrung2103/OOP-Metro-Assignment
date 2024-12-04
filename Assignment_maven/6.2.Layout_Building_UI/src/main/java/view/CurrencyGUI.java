@@ -26,8 +26,11 @@ public class CurrencyGUI extends Application {
     private Label toCurrencyLabel;
 
 
-    private TextArea inputValue;
-    private TextArea convertedValue;
+//    private TextArea inputValue;
+//    private TextArea convertedValue;
+
+    TextField valueInput ;
+    TextField convertedValueOutput ;
 
     private Button convertButton;
     private Label rateLabel;
@@ -85,28 +88,32 @@ public class CurrencyGUI extends Application {
             System.out.println("To currency:" + toCurrency);
         });
 
-        TextField valueInput = new TextField("");
-        TextField convertedValueOutput = new TextField("");
+        valueInput = new TextField("");
+        convertedValueOutput = new TextField("");
 //        String input = valueInput.getText();
 
         convertButton.setOnAction(event -> {
-            String baseCurrency = (String) baseCurrencyChoiceBox.getValue();
-            String toCurrency = (String) toCurrencyChoiceBox.getValue();
+            String baseCurrencyStr = (String) baseCurrencyChoiceBox.getValue();
+            String toCurrencyStr = (String) toCurrencyChoiceBox.getValue();
             rateLabel.setText("");
-            if (baseCurrency == null) {
+            if (baseCurrencyStr == null) {
                 convertedValueOutput.setText("Base currency missing");
-            } else if (toCurrency == null) {
+            } else if (toCurrencyStr == null) {
                 convertedValueOutput.setText("Convert currency missing");
             } else {
                 try {
                     // if
 
                     double inputValue = Double.parseDouble(valueInput.getText());
-                    double result = this.controller.convert(inputValue, baseCurrency, toCurrency);
-                    double resultOneUnit = this.controller.convert(1.0, baseCurrency, toCurrency);
-                    System.out.println("from " + baseCurrency + ": " + inputValue + " to " + toCurrency + ": " + result);
-                    convertedValueOutput.setText(String.format("%.2f", result));
-                    rateLabel.setText("1 " + baseCurrency + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrency);
+                    // 7.2
+                    this.controller.startConvertComputation(inputValue, baseCurrencyStr,toCurrencyStr);
+
+                    // 7.2
+//                    double result = this.controller.convert(inputValue, baseCurrencyStr, toCurrencyStr);
+//                    double resultOneUnit = this.controller.convert(1.0, baseCurrencyStr, toCurrencyStr);
+//                    System.out.println("from " + baseCurrencyStr + ": " + inputValue + " to " + toCurrencyStr + ": " + result);
+//                    convertedValueOutput.setText(String.format("%.2f", result));
+//                    rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
                 } catch (NullPointerException e) {
                     convertedValueOutput.setText("Missing number");
                 } catch (NumberFormatException e) {
@@ -163,13 +170,18 @@ public class CurrencyGUI extends Application {
     }
 
 
+    public void displayConvertedResult(double result, String baseCurrencyStr, String toCurrencyStr){
+        convertedValueOutput.setText(String.format("%.2f", result));
+//        rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
+
+    }
+
+    public void displayConvertedRateResult(double resultOneUnit,String baseCurrencyStr,String toCurrencyStr){
+        rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
+    }
+
     @Override
     public void init() {
         this.controller = new CurrencyController(this);
-
-//        this.controller.addCurrency("USD", 1);
-//        this.controller.addCurrency("GBP", 0.8);
-//        this.controller.addCurrency("EUR", 0.96);
-//        this.controller.addCurrency("VND", 25418.97);
     }
 }
