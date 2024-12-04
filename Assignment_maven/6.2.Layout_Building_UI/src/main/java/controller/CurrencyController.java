@@ -1,7 +1,8 @@
 package controller;
 
-import model.Currency;
-import model.CurrencyApp;
+import dao.CurrencyDao;
+import entity.Currency;
+import entity.CurrencyApp;
 import view.CurrencyGUI;
 
 import java.util.HashMap;
@@ -11,15 +12,20 @@ public class CurrencyController {
 
     CurrencyApp currencyApp;
     CurrencyGUI gui;
+    CurrencyDao currencyDao;
 
     public CurrencyController(CurrencyGUI gui) {
         this.gui = gui;
+        this.currencyDao = new CurrencyDao();
         this.currencyApp = new CurrencyApp();
+        this.initiate();
     }
 
-//    public void setCurrencyApp() {
-//        this.currencyApp = currencyApp;
-//    }
+    public void initiate(){
+        HashMap<String,Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.getAllCurrencies();
+        this.currencyApp.setCurrencyList(currencyList);
+    }
+
 
     public void addCurrency(String currencyName, double rate) {
         this.currencyApp.addCurrency(currencyName, rate);

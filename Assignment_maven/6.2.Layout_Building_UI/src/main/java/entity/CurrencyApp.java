@@ -1,4 +1,4 @@
-package model;
+package entity;
 
 import java.util.HashMap;
 
@@ -25,6 +25,10 @@ public class CurrencyApp {
         this.convertedCurrency = this.getCurrency(convertedCurrency);
         double result = this.baseCurrency.convert(value, this.convertedCurrency);
         return result;
+    }
+
+    public void setCurrencyList(HashMap<String, Currency> currencyList) {
+        this.currencyList = currencyList;
     }
 
     public HashMap<String,Currency> getCurrencyList(){

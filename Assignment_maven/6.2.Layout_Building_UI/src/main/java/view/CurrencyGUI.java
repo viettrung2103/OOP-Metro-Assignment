@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Currency;
+import entity.Currency;
 
 import java.util.Map;
 
@@ -167,9 +167,9 @@ public class CurrencyGUI extends Application {
     public void init() {
         this.controller = new CurrencyController(this);
 
-        this.controller.addCurrency("USD", 1);
-        this.controller.addCurrency("GBP", 0.8);
-        this.controller.addCurrency("EUR", 0.96);
-        this.controller.addCurrency("VND", 25418.97);
+//        this.controller.addCurrency("USD", 1);
+//        this.controller.addCurrency("GBP", 0.8);
+//        this.controller.addCurrency("EUR", 0.96);
+//        this.controller.addCurrency("VND", 25418.97);
     }
 }

@@ -1,4 +1,4 @@
-package model;
+package entity;
 
 public class Currency {
     private String name;
@@ -16,6 +16,10 @@ public class Currency {
 
     public double getRate() {
         return this.rate;
+    }
+
+    public void setRate(double newRate){
+        this.rate = newRate;
     }
 
     public String getName() {
