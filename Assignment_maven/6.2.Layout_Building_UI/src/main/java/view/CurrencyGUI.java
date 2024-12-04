@@ -1,6 +1,6 @@
 package view;
 
-import controller.CurrencyController;
+import application.CurrencyApplication;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +19,7 @@ public class CurrencyGUI extends Application {
 
     private final String title = "Currency Converter";
 
-    private CurrencyController controller;
+    private CurrencyApplication controller;
     private Label appLabel;
     private Label instructionLabel;
     private Label baseCurrencyLabel;
@@ -35,9 +35,14 @@ public class CurrencyGUI extends Application {
     private Button convertButton;
     private Label rateLabel;
 
+    private boolean databaseError = false;
+
 
     @Override
     public void start(Stage stage) {
+        if (databaseError) {
+            rateLabel.setText("Error: Unable to connect to the database. Please try again later.");
+        }
         // setup UI:
 
 
@@ -48,7 +53,7 @@ public class CurrencyGUI extends Application {
         this.baseCurrencyLabel = new Label("From Currency: ");
         this.toCurrencyLabel = new Label("To Currency: ");
         this.convertButton = new Button("Convert");
-        this.rateLabel = new Label("");
+//        this.rateLabel = new Label("");
 
 
         // create layout componet and add layout
@@ -93,31 +98,33 @@ public class CurrencyGUI extends Application {
 //        String input = valueInput.getText();
 
         convertButton.setOnAction(event -> {
-            String baseCurrencyStr = (String) baseCurrencyChoiceBox.getValue();
-            String toCurrencyStr = (String) toCurrencyChoiceBox.getValue();
-            rateLabel.setText("");
-            if (baseCurrencyStr == null) {
-                rateLabel.setText("Base currency missing");
-            } else if (toCurrencyStr == null) {
-                rateLabel.setText("Convert currency missing");
-            } else {
-                try {
-                    // if
+            if (!this.databaseError) {
+                String baseCurrencyStr = (String) baseCurrencyChoiceBox.getValue();
+                String toCurrencyStr = (String) toCurrencyChoiceBox.getValue();
+                rateLabel.setText("");
+                if (baseCurrencyStr == null) {
+                    rateLabel.setText("Base currency missing");
+                } else if (toCurrencyStr == null) {
+                    rateLabel.setText("Convert currency missing");
+                } else {
+                    try {
+                        // if
 
-                    double inputValue = Double.parseDouble(valueInput.getText());
-                    // 7.2
-                    this.controller.startConvertComputation(inputValue, baseCurrencyStr, toCurrencyStr);
+                        double inputValue = Double.parseDouble(valueInput.getText());
+                        // 7.2
+                        this.controller.startConvertComputation(inputValue, baseCurrencyStr, toCurrencyStr);
 
-                    // 7.2
+                        // 7.2
 //                    double result = this.controller.convert(inputValue, baseCurrencyStr, toCurrencyStr);
 //                    double resultOneUnit = this.controller.convert(1.0, baseCurrencyStr, toCurrencyStr);
 //                    System.out.println("from " + baseCurrencyStr + ": " + inputValue + " to " + toCurrencyStr + ": " + result);
 //                    convertedValueOutput.setText(String.format("%.2f", result));
 //                    rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
-                } catch (NullPointerException e) {
-                    rateLabel.setText("Missing number");
-                } catch (NumberFormatException e) {
-                    rateLabel.setText("Please type number");
+                    } catch (NullPointerException e) {
+                        rateLabel.setText("Missing number");
+                    } catch (NumberFormatException e) {
+                        rateLabel.setText("Please type number");
+                    }
                 }
             }
         });
@@ -162,7 +169,7 @@ public class CurrencyGUI extends Application {
         VBox.setMargin(toCurrencyLayout, insets);
         HBox.setMargin(toCurrencyLabel, lineInsets);
         HBox.setMargin(toCurrencyChoiceBox, lineInsets);
-        HBox.setMargin(rateLabel,lineInsets);
+        HBox.setMargin(rateLabel, lineInsets);
 
         BorderPane.setMargin(left, insets);
 
@@ -183,12 +190,18 @@ public class CurrencyGUI extends Application {
         rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
     }
 
+    public void setEmptyDatabase() {
+        databaseError = true;
+    }
+
     public void displayNoDatabaseError() {
+//        databaseError = true;
         rateLabel.setText("Cannot connect to database");
     }
 
     @Override
     public void init() {
-        this.controller = new CurrencyController(this);
+        this.rateLabel = new Label("");
+        this.controller = new CurrencyApplication(this);
     }
 }

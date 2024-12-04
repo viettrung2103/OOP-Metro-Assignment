@@ -1,4 +1,4 @@
-package controller;
+package application;
 
 import dao.CurrencyDao;
 import entity.Currency;
@@ -6,21 +6,26 @@ import entity.CurrencyApp;
 import javafx.application.Platform;
 import view.CurrencyGUI;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
-public class CurrencyController {
+public class CurrencyApplication {
 
 
     CurrencyApp currencyApp;
     CurrencyGUI gui;
     CurrencyDao currencyDao;
 
-    public CurrencyController(CurrencyGUI gui) {
-        this.gui = gui;
-        this.currencyDao = new CurrencyDao();
-        this.currencyApp = new CurrencyApp();
-        this.initiate();
+    public CurrencyApplication(CurrencyGUI gui) {
+        try{
+            this.gui = gui;
+            this.currencyDao = new CurrencyDao();
+            this.currencyApp = new CurrencyApp();
+            this.initiate();
+
+        }catch (Exception e){
+            // where there is error connecting database
+            this.gui.setEmptyDatabase();
+        }
     }
 
     public void initiate() {
