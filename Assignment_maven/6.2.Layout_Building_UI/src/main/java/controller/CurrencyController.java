@@ -6,6 +6,7 @@ import entity.CurrencyApp;
 import javafx.application.Platform;
 import view.CurrencyGUI;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class CurrencyController {
@@ -47,16 +48,20 @@ public class CurrencyController {
     //start  thread
     public void startConvertComputation(double inputValue, String baseCurrencyStr, String toCurrencyStr) {
         new Thread(() -> {
-            Currency baseCurrency = this.currencyDao.getCurrency(baseCurrencyStr);
-            Currency toCurrency = this.currencyDao.getCurrency(toCurrencyStr);
-            double result = baseCurrency.convert(inputValue, toCurrency);
-            double resultOneUnit = baseCurrency.convert(1, toCurrency);
-            System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
-            Platform.runLater(() -> {
-                        this.gui.displayConvertedResult(result, baseCurrencyStr, toCurrencyStr);
-                        this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
-                    }
-            );
+            try {
+                Currency baseCurrency = this.currencyDao.getCurrency(baseCurrencyStr);
+                Currency toCurrency = this.currencyDao.getCurrency(toCurrencyStr);
+                double result = baseCurrency.convert(inputValue, toCurrency);
+                double resultOneUnit = baseCurrency.convert(1, toCurrency);
+                System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
+                Platform.runLater(() -> {
+                            this.gui.displayConvertedResult(result, baseCurrencyStr, toCurrencyStr);
+                            this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+                        }
+                );
+            } catch (Exception e) {
+                this.gui.displayNoDatabaseError();
+            }
         }
         ).start();
 
