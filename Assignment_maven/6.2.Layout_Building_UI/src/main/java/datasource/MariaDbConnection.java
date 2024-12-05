@@ -1,12 +1,18 @@
 package datasource;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MariaDbConnection {
 
-    private static Connection conn = null;
+        private static Connection conn = null;
+//    private static EntityManagerFactory emf = null;
+//    private static EntityManager em = null;
 
     public static Connection getConnection() {
         // if there is no connection, connect to database
@@ -33,4 +39,13 @@ public class MariaDbConnection {
             e.printStackTrace();
         }
     }
+
+//    public static EntityManager getInstance() {
+//        if (em == null) {
+//            if (emf == null) {
+//                emf = Persistence.createEntityManagerFactory("CurrencyMariaDbUnit")
+//            }
+//        }
+//        return em;
+//    }
 }

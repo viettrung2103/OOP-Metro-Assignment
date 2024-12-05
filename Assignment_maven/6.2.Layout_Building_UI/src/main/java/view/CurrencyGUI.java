@@ -94,8 +94,10 @@ public class CurrencyGUI extends Application {
         });
 
         // set default value
-        baseCurrencyChoiceBox.setValue("USD");
-        toCurrencyChoiceBox.setValue("EUR");
+        if (!this.databaseError) {
+            baseCurrencyChoiceBox.setValue("USD");
+            toCurrencyChoiceBox.setValue("EUR");
+        }
 
         valueInput = new TextField("");
         convertedValueOutput = new TextField("");

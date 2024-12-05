@@ -1,24 +1,41 @@
 package entity;
 
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "currency")
 public class Currency {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "abbreviation")
     private String abbrName;
     private double rate; // from usd to other rate
 
-    public Currency(String name, double rate) {
-        this.abbrName = name;
+    public Currency(String abbrName, double rate) {
+        this.abbrName = abbrName;
         this.rate = rate;
     }
+    public Currency(){
 
-    public double convert(double money, Currency anotherCurrency) {
-        double result = money * anotherCurrency.getRate() * 1.0 / this.rate;
-        return result;
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getRate() {
         return this.rate;
     }
 
-    public void setRate(double newRate){
+    public void setRate(double newRate) {
         this.rate = newRate;
     }
 
@@ -26,9 +43,18 @@ public class Currency {
         return this.abbrName;
     }
 
+    public void setAbbrName(String abbrName) {
+        this.abbrName = abbrName;
+    }
+
+    public double convert(double money, Currency anotherCurrency) {
+        double result = money * anotherCurrency.getRate() * 1.0 / this.rate;
+        return result;
+    }
+
     @Override
     public String toString() {
-        return this.abbrName +" : "+this.rate;
+        return this.abbrName + " : " + this.rate;
     }
 
 

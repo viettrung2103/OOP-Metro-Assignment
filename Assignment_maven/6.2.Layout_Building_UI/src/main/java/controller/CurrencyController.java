@@ -29,7 +29,8 @@ public class CurrencyController {
     }
 
     public void initiate() {
-        HashMap<String, Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.getAllCurrencies();
+//        HashMap<String, Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.getAllCurrencies();
+        HashMap<String, Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.findAll();
         this.currencyApp.setCurrencyList(currencyList);
     }
 
@@ -54,8 +55,12 @@ public class CurrencyController {
     public void startConvertComputation(double inputValue, String baseCurrencyStr, String toCurrencyStr) {
         new Thread(() -> {
             try {
-                Currency baseCurrency = this.currencyDao.getCurrency(baseCurrencyStr);
-                Currency toCurrency = this.currencyDao.getCurrency(toCurrencyStr);
+//                Currency baseCurrency = this.currencyDao.getCurrency(baseCurrencyStr);
+//                Currency toCurrency = this.currencyDao.getCurrency(toCurrencyStr);
+                Currency baseCurrency = this.currencyDao.findByName(baseCurrencyStr);
+                Currency toCurrency = this.currencyDao.findByName(toCurrencyStr);
+
+
                 double result = baseCurrency.convert(inputValue, toCurrency);
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
                 System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
