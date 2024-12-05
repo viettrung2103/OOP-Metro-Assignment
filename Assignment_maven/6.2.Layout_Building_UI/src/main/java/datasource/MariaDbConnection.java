@@ -13,9 +13,9 @@ public class MariaDbConnection {
         if (conn == null) {
             try {
                 //correct
-//                conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/currency_converter?user=metrouser&password=password");
+                conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/currency_converter?user=metrouser&password=password");
                 //wrong
-                conn = DriverManager.getConnection("jdbc:mariadb://localhost:3305/currency_converter?user=metrouser&password=password");
+//                conn = DriverManager.getConnection("jdbc:mariadb://localhost:3305/currency_converter?user=metrouser&password=password");
             } catch (SQLException e) {
                 System.out.println("Connection failed");
                 throw new RuntimeException("Database connection failed", e); // Throw exception to propagate the error, does not have this exception is ok, but it should have, for better understand

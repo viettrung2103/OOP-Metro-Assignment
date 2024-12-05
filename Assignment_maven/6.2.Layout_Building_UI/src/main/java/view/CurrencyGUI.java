@@ -1,6 +1,6 @@
 package view;
 
-import application.CurrencyApplication;
+import controller.CurrencyController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +19,7 @@ public class CurrencyGUI extends Application {
 
     private final String title = "Currency Converter";
 
-    private CurrencyApplication controller;
+    private CurrencyController controller;
     private Label appLabel;
     private Label instructionLabel;
     private Label baseCurrencyLabel;
@@ -93,6 +93,10 @@ public class CurrencyGUI extends Application {
             System.out.println("To currency:" + toCurrency);
         });
 
+        // set default value
+        baseCurrencyChoiceBox.setValue("USD");
+        toCurrencyChoiceBox.setValue("EUR");
+
         valueInput = new TextField("");
         convertedValueOutput = new TextField("");
 //        String input = valueInput.getText();
@@ -114,7 +118,7 @@ public class CurrencyGUI extends Application {
                         // 7.2
                         this.controller.startConvertComputation(inputValue, baseCurrencyStr, toCurrencyStr);
 
-                        // 7.2
+                        // 6.2
 //                    double result = this.controller.convert(inputValue, baseCurrencyStr, toCurrencyStr);
 //                    double resultOneUnit = this.controller.convert(1.0, baseCurrencyStr, toCurrencyStr);
 //                    System.out.println("from " + baseCurrencyStr + ": " + inputValue + " to " + toCurrencyStr + ": " + result);
@@ -202,6 +206,6 @@ public class CurrencyGUI extends Application {
     @Override
     public void init() {
         this.rateLabel = new Label("");
-        this.controller = new CurrencyApplication(this);
+        this.controller = new CurrencyController(this);
     }
 }

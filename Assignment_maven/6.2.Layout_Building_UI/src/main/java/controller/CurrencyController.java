@@ -1,4 +1,4 @@
-package application;
+package controller;
 
 import dao.CurrencyDao;
 import entity.Currency;
@@ -8,14 +8,14 @@ import view.CurrencyGUI;
 
 import java.util.HashMap;
 
-public class CurrencyApplication {
+public class CurrencyController {
 
 
     CurrencyApp currencyApp;
     CurrencyGUI gui;
     CurrencyDao currencyDao;
 
-    public CurrencyApplication(CurrencyGUI gui) {
+    public CurrencyController(CurrencyGUI gui) {
         try{
             this.gui = gui;
             this.currencyDao = new CurrencyDao();
