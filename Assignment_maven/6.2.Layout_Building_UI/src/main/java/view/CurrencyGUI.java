@@ -304,6 +304,9 @@ public class CurrencyGUI extends Application {
     public void displayNoDatabaseError() {
 //        databaseError = true;
         rateLabel.setText("Cannot connect to database");
+//        Platform.runLater(() -> {
+//            rateLabel.setText("Cannot connect to database");
+//        });
     }
 
     public void updateChoiceBox(ChoiceBox choiceBox) {

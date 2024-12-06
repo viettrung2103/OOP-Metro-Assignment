@@ -17,16 +17,20 @@ public class CurrencyController {
     CurrencyDao currencyDao;
 
     public CurrencyController(CurrencyGUI gui) {
-        try {
             this.gui = gui;
             this.currencyDao = new CurrencyDao();
             this.currencyApp = new CurrencyApp();
             this.initiate();
-
-        } catch (Exception e) {
-            // where there is error connecting database
-            this.gui.setEmptyDatabase();
-        }
+//        try {
+//
+//        } catch (Exception e) {
+//            // where there is error connecting database
+////            this.gui.setEmptyDatabase();
+//            // when do the construct, if there something happen on another thread, display error, it must be on Platform.runLater()
+//            Platform.runLater(() -> {
+//                this.gui.displayNoDatabaseError();
+//            });
+//        }
     }
 
     public void initiate() {
@@ -50,7 +54,10 @@ public class CurrencyController {
                     this.gui.updateChoiceBoxes();
                 });
             } catch (Exception e) {
-                this.gui.displayNoDatabaseError();
+//                this.gui.displayNoDatabaseError();
+                Platform.runLater(() -> {
+                    this.gui.displayNoDatabaseError();
+                });
             }
 
         }).start();
@@ -95,6 +102,7 @@ public class CurrencyController {
                 );
             } catch (Exception e) {
                 this.gui.displayNoDatabaseError();
+
             }
         }
         ).start();
