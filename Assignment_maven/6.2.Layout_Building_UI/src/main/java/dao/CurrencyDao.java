@@ -76,17 +76,11 @@ public class CurrencyDao {
 
     public Currency findByName(String abbrName){
         EntityManager em = MariaDbJPAConnection.getInstance();
-//        Query query = entitymanager.createNamedQuery("find employee by id");
-//
-//        query.setParameter("id", 1204);
+
         TypedQuery<Currency> query = em.createQuery("select c from Currency c where c.abbrName = :abbr", Currency.class);
         query.setParameter("abbr",abbrName);
-//        System.out.println("test"+em.createQuery("select c from Currency c where c.abbrName = :abbrName"));
-//        System.out.println("query: "+query.getResultList());
-//        System.out.println("single querry "+query.getSingleResult());
         Currency foundCurrency = query.getSingleResult();
-//        Currency currency = em.createQuery("select c from Currency c where c.abbrName = :abbrName").getResultList()[0];
-//        Currency mockCurrenty = new Currency("MOC",1);
+
         return foundCurrency;
     }
 
@@ -96,8 +90,8 @@ public class CurrencyDao {
         return currency;
     }
 
-    public Map<String, Currency> findAll() {
-        Map<String, Currency> currencies = new HashMap<>();
+    public HashMap<String, Currency> findAll() {
+        HashMap<String, Currency> currencies = new HashMap<>();
         EntityManager em = MariaDbJPAConnection.getInstance();
         List<Currency> currencyList = em.createQuery("select c from Currency c").getResultList();
         for (Currency currency : currencyList) {
