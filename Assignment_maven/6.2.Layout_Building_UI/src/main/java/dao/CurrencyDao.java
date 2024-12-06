@@ -93,7 +93,7 @@ public class CurrencyDao {
     public HashMap<String, Currency> findAll() {
         HashMap<String, Currency> currencies = new HashMap<>();
         EntityManager em = MariaDbJPAConnection.getInstance();
-        List<Currency> currencyList = em.createQuery("select c from Currency c").getResultList();
+        List<Currency> currencyList = em.createQuery("SELECT c FROM Currency c ORDER BY c.abbrName ASC").getResultList();
         for (Currency currency : currencyList) {
             String abbrName = currency.getAbbrName();
             currencies.put(abbrName, currency);

@@ -21,16 +21,7 @@ public class CurrencyController {
             this.currencyDao = new CurrencyDao();
             this.currencyApp = new CurrencyApp();
             this.initiate();
-//        try {
-//
-//        } catch (Exception e) {
-//            // where there is error connecting database
-////            this.gui.setEmptyDatabase();
-//            // when do the construct, if there something happen on another thread, display error, it must be on Platform.runLater()
-//            Platform.runLater(() -> {
-//                this.gui.displayNoDatabaseError();
-//            });
-//        }
+
     }
 
     public void initiate() {
@@ -55,32 +46,32 @@ public class CurrencyController {
                 });
             } catch (Exception e) {
 //                this.gui.displayNoDatabaseError();
+                // in catch need to have Platform runLater to display error in view
                 Platform.runLater(() -> {
                     this.gui.displayNoDatabaseError();
                 });
             }
 
         }).start();
-//        Platform.runLater(()->{
-//        });
-    }
-
-
-    public void addCurrency(String currencyName, double rate) {
-        this.currencyApp.addCurrency(currencyName, rate);
 
     }
+
+
+//    public void addCurrency(String currencyName, double rate) {
+//        this.currencyApp.addCurrency(currencyName, rate);
+//
+//    }
 
     public HashMap<String, Currency> getCurrencyList() {
         return this.currencyApp.getCurrencyList();
     }
 
     // when implement UI, change from return double to void as return value is display in UI
-    public double convert(double value, String baseCurrency, String convertedCurrency) {
-
-        double result = this.currencyApp.convert(value, baseCurrency, convertedCurrency);
-        return result;
-    }
+//    public double convert(double value, String baseCurrency, String convertedCurrency) {
+//
+//        double result = this.currencyApp.convert(value, baseCurrency, convertedCurrency);
+//        return result;
+//    }
 
     //start  thread
     public void startConvertComputation(double inputValue, String baseCurrencyStr, String toCurrencyStr) {
@@ -102,7 +93,6 @@ public class CurrencyController {
                 );
             } catch (Exception e) {
                 this.gui.displayNoDatabaseError();
-
             }
         }
         ).start();
