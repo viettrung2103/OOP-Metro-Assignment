@@ -39,7 +39,7 @@ public class CurrencyController {
 
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
 
-                System.out.println("current: " + currentBaseStr + "to: " + currentToStr);
+                System.out.println("current: " + currentBaseStr + " to: " + currentToStr);
                 Platform.runLater(()->{
                     this.gui.displayConvertedRateResult(resultOneUnit,currentBaseStr,currentToStr);
                     this.gui.updateChoiceBoxes();
