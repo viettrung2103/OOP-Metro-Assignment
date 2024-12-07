@@ -17,10 +17,10 @@ public class CurrencyController {
     CurrencyDao currencyDao;
 
     public CurrencyController(CurrencyGUI gui) {
-            this.gui = gui;
-            this.currencyDao = new CurrencyDao();
-            this.currencyApp = new CurrencyApp();
-            this.initiate();
+        this.gui = gui;
+        this.currencyDao = new CurrencyDao();
+        this.currencyApp = new CurrencyApp();
+        this.initiate();
 
     }
 
@@ -40,8 +40,9 @@ public class CurrencyController {
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
 
                 System.out.println("current: " + currentBaseStr + " to: " + currentToStr);
-                Platform.runLater(()->{
-                    this.gui.displayConvertedRateResult(resultOneUnit,currentBaseStr,currentToStr);
+                Platform.runLater(() -> {
+                    this.gui.displayConvertedRateResult(resultOneUnit, currentBaseStr, currentToStr);
+                    this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
                     this.gui.updateChoiceBoxes();
                 });
             } catch (Exception e) {
@@ -92,7 +93,10 @@ public class CurrencyController {
                         }
                 );
             } catch (Exception e) {
-                this.gui.displayNoDatabaseError();
+                Platform.runLater(() -> {
+                    this.gui.displayNoDatabaseError();
+                });
+//                this.gui.displayNoDatabaseError();
             }
         }
         ).start();
@@ -103,20 +107,28 @@ public class CurrencyController {
             try {
                 Currency baseCurrency = this.currencyDao.findByName(baseCurrencyStr);
                 Currency toCurrency = this.currencyDao.findByName(toCurrencyStr);
+                this.gui.setCurrentBaseCurrencyStr(baseCurrencyStr);
+                this.gui.setCurrentToCurrencyStr(toCurrencyStr);
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
                 Platform.runLater(() -> {
                     this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+                    this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
+
                 });
             } catch (Exception e) {
-                this.gui.displayNoDatabaseError();
+                Platform.runLater(() -> {
+                    this.gui.displayNoDatabaseError();
+                });
+//                this.gui.displayNoDatabaseError();
             }
         }).start();
     }
 
-    public void startInsertComputation(String newCurrencyName, double newInput) {
+    public void startInsertComputation(String newAbbrName, String newCurrencyName, double newInput) {
+//        String newCurrencyName = "test Currency";
         new Thread(() -> {
             System.out.println(newCurrencyName + " : " + newInput);
-            Currency newCurrency = new Currency(newCurrencyName, newInput);
+            Currency newCurrency = new Currency(newAbbrName, newCurrencyName, newInput);
             this.currencyDao.addPersist(newCurrency);
             HashMap<String, Currency> updateList = this.currencyDao.findAll();
             // update currencyList in model

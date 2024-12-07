@@ -11,8 +11,9 @@ public class CurrencyApp {
         this.currencyList = new HashMap<>();
     }
 
-    public void addCurrency(String currencyName, double rate) {
-        Currency newCurrency = new Currency(currencyName, rate);
+    public void addCurrency(String abbrName, double rate) {
+        String currencyName = "Mock Currency";
+        Currency newCurrency = new Currency(abbrName,currencyName, rate);
         this.currencyList.put(currencyName, newCurrency);
     }
 

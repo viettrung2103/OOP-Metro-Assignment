@@ -23,6 +23,9 @@ public class CurrencyGUI extends Application {
     private Label instructionLabel;
     private Label baseCurrencyLabel;
     private Label toCurrencyLabel;
+    private Label baseCurrencyNameLabel;
+    private Label toCurrencyNameLabel;
+
 
     TextField valueInput;
     TextField convertedValueOutput;
@@ -32,8 +35,8 @@ public class CurrencyGUI extends Application {
 
     private boolean databaseError = false;
 
-    ChoiceBox baseCurrencyChoiceBox;
-    ChoiceBox toCurrencyChoiceBox;
+    ChoiceBox baseCurrencyAbbrNameChoiceBox;
+    ChoiceBox toCurrencyAbbrNameChoiceBox;
 
 
     @Override
@@ -54,6 +57,8 @@ public class CurrencyGUI extends Application {
         this.toCurrencyLabel = new Label("To Currency: ");
         this.convertButton = new Button("Convert");
         this.addButton = new Button("Add Currency");
+        this.baseCurrencyNameLabel = new Label("");
+        this.toCurrencyNameLabel = new Label("");
 //        this.rateLabel = new Label("");
 
         // create layout componet and add layout
@@ -67,55 +72,55 @@ public class CurrencyGUI extends Application {
         topCenter.getChildren().add(this.appLabel);
         topCenter.setAlignment(Pos.CENTER);
 
-        baseCurrencyChoiceBox = new ChoiceBox();
-        this.updateChoiceBox(baseCurrencyChoiceBox);
+        baseCurrencyAbbrNameChoiceBox = new ChoiceBox();
+        this.updateChoiceBox(baseCurrencyAbbrNameChoiceBox);
 
-        toCurrencyChoiceBox = new ChoiceBox();
-        this.updateChoiceBox(toCurrencyChoiceBox);
+        toCurrencyAbbrNameChoiceBox = new ChoiceBox();
+        this.updateChoiceBox(toCurrencyAbbrNameChoiceBox);
 
         // set default value
         if (!this.databaseError) {
-            baseCurrencyChoiceBox.setValue(currentBaseCurrencyStr);
-            toCurrencyChoiceBox.setValue(currentToCurrencyStr);
+            baseCurrencyAbbrNameChoiceBox.setValue(currentBaseCurrencyStr);
+            toCurrencyAbbrNameChoiceBox.setValue(currentToCurrencyStr);
 
         }
 
-        baseCurrencyChoiceBox.setOnAction(event -> {
+        baseCurrencyAbbrNameChoiceBox.setOnAction(event -> {
             // first way, acces the model of the choicebox to get the index and item, int and Object type
-//            int selectedIdx = baseCurrencyChoiceBox.getSelectionModel().getSelectedIndex();
-//            Object selectedItem = baseCurrencyChoiceBox.getSelectionModel().getSelectedItem();
-//            String baseCurrency = (String) baseCurrencyChoiceBox.getValue();
-            String baseCurrencyStr = (String) baseCurrencyChoiceBox.getValue();
-            String toCurrencyStr = (String) toCurrencyChoiceBox.getValue();
+//            int selectedIdx = baseCurrencyAbbrNameChoiceBox.getSelectionModel().getSelectedIndex();
+//            Object selectedItem = baseCurrencyAbbrNameChoiceBox.getSelectionModel().getSelectedItem();
+//            String baseCurrency = (String) baseCurrencyAbbrNameChoiceBox.getValue();
+            String baseCurrencyStr = (String) baseCurrencyAbbrNameChoiceBox.getValue();
+            String toCurrencyStr = (String) toCurrencyAbbrNameChoiceBox.getValue();
 //            System.out.println("To currency:" + toCurrency);
-            if (!baseCurrencyStr.equals("")&& !toCurrencyStr.equals("")){
-                this.controller.startUnitConvertComputation(baseCurrencyStr,toCurrencyStr);
+//            if (!baseCurrencyStr.equals("") && !toCurrencyStr.equals("")) {
+            if (baseCurrencyStr != null && toCurrencyStr != null) {
+                this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
             }
 
         });
-
 
 
         valueInput = new TextField("");
         convertedValueOutput = new TextField("");
 
-        toCurrencyChoiceBox.setOnAction(event -> {
-            String baseCurrencyStr = (String) baseCurrencyChoiceBox.getValue();
-            String toCurrencyStr = (String) toCurrencyChoiceBox.getValue();
+        toCurrencyAbbrNameChoiceBox.setOnAction(event -> {
+            String baseCurrencyStr = (String) baseCurrencyAbbrNameChoiceBox.getValue();
+            String toCurrencyStr = (String) toCurrencyAbbrNameChoiceBox.getValue();
 //            System.out.println("To currency:" + toCurrency);
-            if (!baseCurrencyStr.equals("")&& !toCurrencyStr.equals("")){
-                this.controller.startUnitConvertComputation(baseCurrencyStr,toCurrencyStr);
+//            if (!baseCurrencyStr.equals("") && !toCurrencyStr.equals("")) {
+            if (baseCurrencyStr != null && toCurrencyStr != null) {
+                this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
             }
         });
-
 
 
 //        String input = valueInput.getText();
 
         convertButton.setOnAction(event -> {
             if (!this.databaseError) {
-                String baseCurrencyStr = (String) baseCurrencyChoiceBox.getValue();
-                String toCurrencyStr = (String) toCurrencyChoiceBox.getValue();
+                String baseCurrencyStr = (String) baseCurrencyAbbrNameChoiceBox.getValue();
+                String toCurrencyStr = (String) toCurrencyAbbrNameChoiceBox.getValue();
                 currentBaseCurrencyStr = baseCurrencyStr;
                 currentToCurrencyStr = toCurrencyStr;
                 rateLabel.setText("");
@@ -145,32 +150,38 @@ public class CurrencyGUI extends Application {
             String addTitle = "Add Currency";
             Button addButton = new Button("Add New Currency");
             Label addLabel = new Label("Add Currency:");
-            Label newCurrencyLabel = new Label("New Currency:");
+            Label newNameLabel = new Label("Name:");
+            Label newAbbrNameLabel = new Label("Abbreviation:");
             Label newRateLabel = new Label("Rate:");
             Label errorLabel = new Label("");
 
-            TextField newCurrencyInput = new TextField("");
+            TextField newNameInput = new TextField("");
+            TextField newAbbrInput = new TextField("");
             TextField newRateInput = new TextField("");
 
 
             BorderPane addRoot = new BorderPane();
 
             VBox center = new VBox();
-            HBox newCurrencyLayout = new HBox();
+            HBox newCurrencyNameLayout = new HBox();
+            HBox newAbbrLayout = new HBox();
             HBox newRateLayout = new HBox();
             HBox addButtonLayout = new HBox();
 
             addButton.setOnAction(e -> {
-                String newCurrencyStr = newCurrencyInput.getText();
+                String newAbbrStr = newAbbrInput.getText();
+                String newCurrencyStr = newNameInput.getText();
                 String newRateStr = newRateInput.getText();
 
                 errorLabel.setText("");
-                if (newCurrencyStr.equals("")) {
-                    errorLabel.setText("Missing Currency Name");
-                } else if (!checkCurrencyNameLength(newCurrencyStr)) {
-                    errorLabel.setText("currency name must have 3 characters");
-                } else if (!checkAllAlphebets(newCurrencyStr)) {
-                    errorLabel.setText("currency name must all be alphabet");
+                if (newAbbrStr.equals("")) {
+                    errorLabel.setText("Missing Currency abbreviation");
+                } else if (!checkCurrencyNameLength(newAbbrStr)) {
+                    errorLabel.setText("currency abbreviation must have 3 characters");
+                } else if (!checkAllAlphebets(newAbbrStr)) {
+                    errorLabel.setText("currency abbreviation must all be alphabet");
+                } else if (newCurrencyStr.equals("")) {
+                    errorLabel.setText("Missing name for the currency");
                 } else if (newRateStr.equals("")) {
                     errorLabel.setText("Missing Rate");
                 } else {
@@ -178,7 +189,7 @@ public class CurrencyGUI extends Application {
                         // if
                         double inputRateValue = Double.parseDouble(newRateStr);
                         // 7.2
-                        this.controller.startInsertComputation(newCurrencyStr.toUpperCase(), inputRateValue);
+                        this.controller.startInsertComputation(newAbbrStr.toUpperCase(), newCurrencyStr, inputRateValue);
                         Stage currentStage = (Stage) addButton.getScene().getWindow();
                         currentStage.close();
                     } catch (NullPointerException exception) {
@@ -190,24 +201,30 @@ public class CurrencyGUI extends Application {
 //
             });
 
-            newCurrencyLayout.getChildren().addAll(newCurrencyLabel, newCurrencyInput);
+            newCurrencyNameLayout.getChildren().addAll(newNameLabel, newNameInput);
+            newAbbrLayout.getChildren().addAll(newAbbrNameLabel, newAbbrInput);
             newRateLayout.getChildren().addAll(newRateLabel, newRateInput);
             addButtonLayout.getChildren().addAll(addButton, errorLabel);
 
-//            center.getChildren().add(newCurrencyLayout);
-            center.getChildren().addAll(addLabel, newCurrencyLayout, newRateLayout, addButtonLayout);
+//            center.getChildren().add(newCurrencyNameLayout);
+            center.getChildren().addAll(addLabel, newCurrencyNameLayout, newAbbrLayout, newRateLayout, addButtonLayout);
             // set inset
             Insets lineInsets = new Insets(0, 20, 0, 20);
             Insets insets = new Insets(20, 40, 20, 40);
 
             VBox.setMargin(addLabel, insets);
-            VBox.setMargin(newCurrencyLayout, insets);
+            VBox.setMargin(newCurrencyNameLayout, insets);
+            VBox.setMargin(newAbbrLayout, insets);
             VBox.setMargin(newRateLayout, insets);
             VBox.setMargin(addButtonLayout, insets);
 
-            HBox.setMargin(newCurrencyLabel, lineInsets);
-            HBox.setMargin(newCurrencyInput, lineInsets);
-            HBox.setHgrow(newCurrencyInput, Priority.ALWAYS);
+            HBox.setMargin(newNameLabel, lineInsets);
+            HBox.setMargin(newNameInput, lineInsets);
+            HBox.setHgrow(newNameInput, Priority.ALWAYS);
+
+            HBox.setMargin(newAbbrNameLabel, lineInsets);
+            HBox.setMargin(newAbbrInput, lineInsets);
+            HBox.setHgrow(newAbbrInput, Priority.ALWAYS);
 
             HBox.setMargin(newRateLabel, lineInsets);
 //            HBox.setMargin(newRateInput,lineInsets);
@@ -217,12 +234,13 @@ public class CurrencyGUI extends Application {
             HBox.setMargin(addButton, lineInsets);
             HBox.setMargin(errorLabel, lineInsets);
 
-            newCurrencyInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
+            newNameInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
+            newAbbrInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
 
             addRoot.setCenter(center);
 
             final double initialAddWidth = 500;
-            final double initialAddHeight = 250;
+            final double initialAddHeight = 350;
             Stage addStage = new Stage();
             Scene addScene = new Scene(addRoot, initialAddWidth, initialAddHeight);
             addStage.setScene(addScene);
@@ -232,18 +250,22 @@ public class CurrencyGUI extends Application {
 
 
         instructionLayout.getChildren().add(this.instructionLabel);
+
         baseCurrencyLayout.getChildren().
                 add(this.baseCurrencyLabel);
         baseCurrencyLayout.getChildren().
-                add(baseCurrencyChoiceBox);
+                add(baseCurrencyAbbrNameChoiceBox);
+        baseCurrencyLayout.getChildren().add(baseCurrencyNameLabel);
         baseCurrencyLayout.getChildren().
                 add(valueInput);
         baseCurrencyLayout.getChildren().
                 add(this.convertButton);
+
         toCurrencyLayout.getChildren().
                 add(this.toCurrencyLabel);
         toCurrencyLayout.getChildren().
-                add(toCurrencyChoiceBox);
+                add(toCurrencyAbbrNameChoiceBox);
+        toCurrencyLayout.getChildren().add(toCurrencyNameLabel);
         toCurrencyLayout.getChildren().
                 add(convertedValueOutput);
         toCurrencyLayout.getChildren().add(rateLabel);
@@ -261,7 +283,7 @@ public class CurrencyGUI extends Application {
         //add outside margin:
         Insets lineInsets = new Insets(0, 20, 0, 20);
         Insets insets = new Insets(20, 40, 20, 40);
-//        toCurrencyChoiceBox.setMar
+//        toCurrencyAbbrNameChoiceBox.setMar
         StackPane.setMargin(topCenter, insets);
         VBox.setMargin(instructionLayout, insets);
         HBox.setMargin(instructionLabel, lineInsets);
@@ -270,12 +292,16 @@ public class CurrencyGUI extends Application {
 
         VBox.setMargin(baseCurrencyLayout, insets);
         HBox.setMargin(baseCurrencyLabel, lineInsets);
-        HBox.setMargin(baseCurrencyChoiceBox, lineInsets);
+        HBox.setMargin(baseCurrencyAbbrNameChoiceBox, lineInsets);
+        HBox.setMargin(baseCurrencyNameLabel, lineInsets);
+        HBox.setMargin(valueInput, lineInsets);
         HBox.setMargin(convertButton, lineInsets);
 
         VBox.setMargin(toCurrencyLayout, insets);
         HBox.setMargin(toCurrencyLabel, lineInsets);
-        HBox.setMargin(toCurrencyChoiceBox, lineInsets);
+        HBox.setMargin(toCurrencyAbbrNameChoiceBox, lineInsets);
+        HBox.setMargin(toCurrencyNameLabel, lineInsets);
+        HBox.setMargin(convertedValueOutput, lineInsets);
         HBox.setMargin(rateLabel, lineInsets);
 
         BorderPane.setMargin(left, insets);
@@ -302,8 +328,11 @@ public class CurrencyGUI extends Application {
     }
 
     public void displayNoDatabaseError() {
+        if (databaseError) {
+            rateLabel.setText("Cannot connect to database");
+
+        }
 //        databaseError = true;
-        rateLabel.setText("Cannot connect to database");
 //        Platform.runLater(() -> {
 //            rateLabel.setText("Cannot connect to database");
 //        });
@@ -318,11 +347,16 @@ public class CurrencyGUI extends Application {
     }
 
     public void updateChoiceBoxes() {
-        updateChoiceBox(this.baseCurrencyChoiceBox);
-        updateChoiceBox(this.toCurrencyChoiceBox);
-        baseCurrencyChoiceBox.setValue(currentBaseCurrencyStr);
-        toCurrencyChoiceBox.setValue(currentToCurrencyStr);
+        updateChoiceBox(this.baseCurrencyAbbrNameChoiceBox);
+        updateChoiceBox(this.toCurrencyAbbrNameChoiceBox);
+        baseCurrencyAbbrNameChoiceBox.setValue(currentBaseCurrencyStr);
+        toCurrencyAbbrNameChoiceBox.setValue(currentToCurrencyStr);
 
+    }
+
+    public void displayNewCurrencyNameLabel(String baseCurrencyName, String toCurrencyLabelName) {
+        baseCurrencyNameLabel.setText(baseCurrencyName);
+        toCurrencyNameLabel.setText(toCurrencyLabelName);
     }
 
     public boolean checkCurrencyNameLength(String currencyName) {
@@ -338,8 +372,16 @@ public class CurrencyGUI extends Application {
         return currentBaseCurrencyStr;
     }
 
-    public String getCurrentToCurrencyStr(){
+    public void setCurrentBaseCurrencyStr(String string){
+        this.currentBaseCurrencyStr = string;
+    }
+
+    public String getCurrentToCurrencyStr() {
         return currentToCurrencyStr;
+    }
+
+    public void setCurrentToCurrencyStr(String string){
+        this.currentToCurrencyStr = string;
     }
 
 //    public
@@ -349,6 +391,7 @@ public class CurrencyGUI extends Application {
         this.rateLabel = new Label("");
         this.controller = new CurrencyController(this);
     }
+
 }
 
 

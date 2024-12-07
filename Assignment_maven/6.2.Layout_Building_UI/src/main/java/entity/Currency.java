@@ -11,17 +11,17 @@ public class Currency {
     private int id;
     @Column(name = "abbreviation")
     private String abbrName;
+    private String name;
     private double rate; // from usd to other rate
 
-    public Currency(String abbrName, double rate) {
+    public Currency(String abbrName, String name, double rate) {
         this.abbrName = abbrName;
+        this.name = name;
         this.rate = rate;
     }
     public Currency(){
 
     }
-
-
 
     public int getId() {
         return id;
@@ -45,6 +45,14 @@ public class Currency {
 
     public void setAbbrName(String abbrName) {
         this.abbrName = abbrName;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public double convert(double money, Currency anotherCurrency) {
