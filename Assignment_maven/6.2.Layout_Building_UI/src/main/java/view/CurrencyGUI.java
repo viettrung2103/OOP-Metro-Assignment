@@ -13,8 +13,8 @@ import entity.Currency;
 import java.util.Map;
 
 public class CurrencyGUI extends Application {
-    private String currentBaseCurrencyStr = "USD";
-    private String currentToCurrencyStr = "USD";
+    private String currentBaseCurrencyStr = "";
+    private String currentToCurrencyStr = "";
 
     private final String title = "Currency Converter";
 
@@ -92,10 +92,16 @@ public class CurrencyGUI extends Application {
 //            String baseCurrency = (String) baseCurrencyAbbrNameChoiceBox.getValue();
             String baseCurrencyStr = (String) baseCurrencyAbbrNameChoiceBox.getValue();
             String toCurrencyStr = (String) toCurrencyAbbrNameChoiceBox.getValue();
+
 //            System.out.println("To currency:" + toCurrency);
 //            if (!baseCurrencyStr.equals("") && !toCurrencyStr.equals("")) {
             if (baseCurrencyStr != null && toCurrencyStr != null) {
-                this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
+                if (!baseCurrencyStr.equals(currentBaseCurrencyStr) || !toCurrencyStr.equals(currentToCurrencyStr)){
+                valueInput.setText("");
+                    convertedValueOutput.setText("");
+                    this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
+
+                }
             }
 
         });
@@ -110,7 +116,12 @@ public class CurrencyGUI extends Application {
 //            System.out.println("To currency:" + toCurrency);
 //            if (!baseCurrencyStr.equals("") && !toCurrencyStr.equals("")) {
             if (baseCurrencyStr != null && toCurrencyStr != null) {
-                this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
+                if (!baseCurrencyStr.equals(currentBaseCurrencyStr) || !toCurrencyStr.equals(currentToCurrencyStr)) {
+                    valueInput.setText("");
+                    convertedValueOutput.setText("");
+                    this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
+
+                }
             }
         });
 
@@ -337,6 +348,11 @@ public class CurrencyGUI extends Application {
 //            rateLabel.setText("Cannot connect to database");
 //        });
     }
+
+    public void setDatabaseError(boolean state){
+        this.databaseError = state;
+    }
+
 
     public void updateChoiceBox(ChoiceBox choiceBox) {
         choiceBox.getItems().clear();

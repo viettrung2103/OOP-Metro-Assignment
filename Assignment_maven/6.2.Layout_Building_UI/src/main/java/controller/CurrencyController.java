@@ -1,8 +1,10 @@
 package controller;
 
 import dao.CurrencyDao;
+import dao.TransactionDao;
 import entity.Currency;
 import entity.CurrencyApp;
+import entity.Transaction;
 import javafx.application.Platform;
 import view.CurrencyGUI;
 
@@ -15,11 +17,14 @@ public class CurrencyController {
     CurrencyApp currencyApp;
     CurrencyGUI gui;
     CurrencyDao currencyDao;
+    TransactionDao transactionDao;
 
     public CurrencyController(CurrencyGUI gui) {
         this.gui = gui;
         this.currencyDao = new CurrencyDao();
+        this.transactionDao = new TransactionDao();
         this.currencyApp = new CurrencyApp();
+
         this.initiate();
 
     }
@@ -41,14 +46,15 @@ public class CurrencyController {
 
                 System.out.println("current: " + currentBaseStr + " to: " + currentToStr);
                 Platform.runLater(() -> {
+                    this.gui.setDatabaseError(false);
                     this.gui.displayConvertedRateResult(resultOneUnit, currentBaseStr, currentToStr);
                     this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
                     this.gui.updateChoiceBoxes();
                 });
             } catch (Exception e) {
-//                this.gui.displayNoDatabaseError();
-                // in catch need to have Platform runLater to display error in view
+
                 Platform.runLater(() -> {
+                    this.gui.setDatabaseError(true);
                     this.gui.displayNoDatabaseError();
                 });
             }
@@ -85,6 +91,13 @@ public class CurrencyController {
 
 
                 double result = baseCurrency.convert(inputValue, toCurrency);
+
+                Transaction newTransacion = new Transaction(inputValue, baseCurrency, toCurrency);
+
+                //addpersist transaction to db
+                this.transactionDao.addPersist(newTransacion);
+                System.out.println(newTransacion+ " is added to databae");
+
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
                 System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
                 Platform.runLater(() -> {
@@ -131,12 +144,24 @@ public class CurrencyController {
             Currency newCurrency = new Currency(newAbbrName, newCurrencyName, newInput);
             this.currencyDao.addPersist(newCurrency);
             HashMap<String, Currency> updateList = this.currencyDao.findAll();
+
+
+
+            //if the currencyList is empty
+            if(this.currencyApp.getCurrencyList().isEmpty()){
+                this.gui.setCurrentBaseCurrencyStr(newAbbrName);
+                this.gui.setCurrentToCurrencyStr(newAbbrName);
+                this.gui.setDatabaseError(false);
+            }
             // update currencyList in model
             this.currencyApp.setCurrencyList(updateList);
             // update dropbox in view with new currencyList
             Platform.runLater(() -> {
                 this.gui.updateChoiceBoxes();
+//                this.gui.displayConvertedRateResult();
             });
+
+            this.startUnitConvertComputation(this.gui.getCurrentBaseCurrencyStr(),this.gui.getCurrentToCurrencyStr());
 
         }).start();
     }
