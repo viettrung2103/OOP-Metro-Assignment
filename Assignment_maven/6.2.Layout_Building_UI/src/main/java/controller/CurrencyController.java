@@ -6,9 +6,11 @@ import entity.Currency;
 import entity.CurrencyApp;
 import entity.Transaction;
 import javafx.application.Platform;
+import javafx.scene.control.TableView;
 import view.CurrencyGUI;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CurrencyController {
@@ -46,6 +48,7 @@ public class CurrencyController {
 
                 System.out.println("current: " + currentBaseStr + " to: " + currentToStr);
                 Platform.runLater(() -> {
+                    this.gui.setInitilizeDatabase(true);
                     this.gui.setDatabaseError(false);
                     this.gui.displayConvertedRateResult(resultOneUnit, currentBaseStr, currentToStr);
                     this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
@@ -54,6 +57,7 @@ public class CurrencyController {
             } catch (Exception e) {
 
                 Platform.runLater(() -> {
+                    this.gui.setInitilizeDatabase(true);
                     this.gui.setDatabaseError(true);
                     this.gui.displayNoDatabaseError();
                 });
@@ -96,7 +100,7 @@ public class CurrencyController {
 
                 //addpersist transaction to db
                 this.transactionDao.addPersist(newTransacion);
-                System.out.println(newTransacion+ " is added to databae");
+                System.out.println(newTransacion + " is added to databae");
 
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
                 System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
@@ -146,9 +150,8 @@ public class CurrencyController {
             HashMap<String, Currency> updateList = this.currencyDao.findAll();
 
 
-
             //if the currencyList is empty
-            if(this.currencyApp.getCurrencyList().isEmpty()){
+            if (this.currencyApp.getCurrencyList().isEmpty()) {
                 this.gui.setCurrentBaseCurrencyStr(newAbbrName);
                 this.gui.setCurrentToCurrencyStr(newAbbrName);
                 this.gui.setDatabaseError(false);
@@ -161,7 +164,25 @@ public class CurrencyController {
 //                this.gui.displayConvertedRateResult();
             });
 
-            this.startUnitConvertComputation(this.gui.getCurrentBaseCurrencyStr(),this.gui.getCurrentToCurrencyStr());
+            this.startUnitConvertComputation(this.gui.getCurrentBaseCurrencyStr(), this.gui.getCurrentToCurrencyStr());
+
+        }).start();
+    }
+
+    public void startDisplayTransactionCalculation() {
+        new Thread(() -> {
+            try {
+                List<Transaction> transactionList = transactionDao.findAll();
+//                TableView<Transaction> tableView = this.gui.getTransactionTableView();
+                System.out.println(transactionList);
+                Platform.runLater(() -> {
+                    this.gui.displayTransactionList(transactionList);
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    this.gui.displayNoDatabaseError();
+                });
+            }
 
         }).start();
     }

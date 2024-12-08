@@ -62,7 +62,7 @@ public class Currency {
 
     @Override
     public String toString() {
-        return this.abbrName + " : " + this.rate;
+        return this.abbrName;
     }
 
 

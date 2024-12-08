@@ -1,15 +1,19 @@
 package view;
 
 import controller.CurrencyController;
+import entity.Transaction;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import entity.Currency;
 
+import java.util.List;
 import java.util.Map;
 
 public class CurrencyGUI extends Application {
@@ -17,8 +21,11 @@ public class CurrencyGUI extends Application {
     private String currentToCurrencyStr = "";
 
     private final String title = "Currency Converter";
-
     private CurrencyController controller;
+    private boolean databaseError = false;
+    private boolean initilizeDatabase = false;
+
+    //components
     private Label appLabel;
     private Label instructionLabel;
     private Label baseCurrencyLabel;
@@ -30,14 +37,25 @@ public class CurrencyGUI extends Application {
     TextField valueInput;
     TextField convertedValueOutput;
 
-    private Button convertButton, addButton;
+    private Button convertButton, addButton, transactionButton;
     private Label rateLabel;
 
-    private boolean databaseError = false;
 
     ChoiceBox baseCurrencyAbbrNameChoiceBox;
     ChoiceBox toCurrencyAbbrNameChoiceBox;
 
+    //layout
+    BorderPane root;
+    StackPane topCenter;
+    VBox left;
+    HBox optionsLayout;
+    HBox instructionLayout;
+    HBox baseCurrencyLayout;
+    HBox toCurrencyLayout;
+
+    //for transactionView
+    TableView transactionTableView;
+    double rowCount;
 
     @Override
     public void start(Stage stage) {
@@ -47,9 +65,7 @@ public class CurrencyGUI extends Application {
             rateLabel.setText("Connecting to database...");
         }
         // setup UI:
-
-
-        BorderPane root = new BorderPane();
+        this.root = new BorderPane();
 
         this.appLabel = new Label("Currency Converter");
         this.instructionLabel = new Label("Choose the base currency and the currency that you want to convert to. Type the value and press convert");
@@ -57,17 +73,19 @@ public class CurrencyGUI extends Application {
         this.toCurrencyLabel = new Label("To Currency: ");
         this.convertButton = new Button("Convert");
         this.addButton = new Button("Add Currency");
+        this.transactionButton = new Button("Transaction List");
         this.baseCurrencyNameLabel = new Label("");
         this.toCurrencyNameLabel = new Label("");
 //        this.rateLabel = new Label("");
 
         // create layout componet and add layout
-        VBox left = new VBox();
-        HBox instructionLayout = new HBox();
-        HBox baseCurrencyLayout = new HBox();
-        HBox toCurrencyLayout = new HBox();
+        this.left = new VBox();
+        this.optionsLayout = new HBox();
+        this.instructionLayout = new HBox();
+        this.baseCurrencyLayout = new HBox();
+        this.toCurrencyLayout = new HBox();
 
-        StackPane topCenter = new StackPane();
+        this.topCenter = new StackPane();
         root.setTop(topCenter);
         topCenter.getChildren().add(this.appLabel);
         topCenter.setAlignment(Pos.CENTER);
@@ -96,8 +114,8 @@ public class CurrencyGUI extends Application {
 //            System.out.println("To currency:" + toCurrency);
 //            if (!baseCurrencyStr.equals("") && !toCurrencyStr.equals("")) {
             if (baseCurrencyStr != null && toCurrencyStr != null) {
-                if (!baseCurrencyStr.equals(currentBaseCurrencyStr) || !toCurrencyStr.equals(currentToCurrencyStr)){
-                valueInput.setText("");
+                if (!baseCurrencyStr.equals(currentBaseCurrencyStr) || !toCurrencyStr.equals(currentToCurrencyStr)) {
+                    valueInput.setText("");
                     convertedValueOutput.setText("");
                     this.controller.startUnitConvertComputation(baseCurrencyStr, toCurrencyStr);
 
@@ -157,137 +175,211 @@ public class CurrencyGUI extends Application {
 
         addButton.setOnAction(event -> {
 //            System.out.println("Add button clicked");
+            if (this.initilizeDatabase){
 
             String addTitle = "Add Currency";
-            Button addButton = new Button("Add New Currency");
-            Label addLabel = new Label("Add Currency:");
-            Label newNameLabel = new Label("Name:");
-            Label newAbbrNameLabel = new Label("Abbreviation:");
-            Label newRateLabel = new Label("Rate:");
-            Label errorLabel = new Label("");
+                Button addButton = new Button("Add New Currency");
+                Label addLabel = new Label("Add Currency:");
+                Label newNameLabel = new Label("Name:");
+                Label newAbbrNameLabel = new Label("Abbreviation:");
+                Label newRateLabel = new Label("Rate:");
+                Label errorLabel = new Label("");
 
-            TextField newNameInput = new TextField("");
-            TextField newAbbrInput = new TextField("");
-            TextField newRateInput = new TextField("");
+                TextField newNameInput = new TextField("");
+                TextField newAbbrInput = new TextField("");
+                TextField newRateInput = new TextField("");
 
 
-            BorderPane addRoot = new BorderPane();
+                BorderPane addRoot = new BorderPane();
 
-            VBox center = new VBox();
-            HBox newCurrencyNameLayout = new HBox();
-            HBox newAbbrLayout = new HBox();
-            HBox newRateLayout = new HBox();
-            HBox addButtonLayout = new HBox();
 
-            addButton.setOnAction(e -> {
-                String newAbbrStr = newAbbrInput.getText();
-                String newCurrencyStr = newNameInput.getText();
-                String newRateStr = newRateInput.getText();
+                VBox center = new VBox();
+                HBox newCurrencyNameLayout = new HBox();
+                HBox newAbbrLayout = new HBox();
+                HBox newRateLayout = new HBox();
+                HBox addButtonLayout = new HBox();
 
-                errorLabel.setText("");
-                if (newAbbrStr.equals("")) {
-                    errorLabel.setText("Missing Currency abbreviation");
-                } else if (!checkCurrencyNameLength(newAbbrStr)) {
-                    errorLabel.setText("currency abbreviation must have 3 characters");
-                } else if (!checkAllAlphebets(newAbbrStr)) {
-                    errorLabel.setText("currency abbreviation must all be alphabet");
-                } else if (newCurrencyStr.equals("")) {
-                    errorLabel.setText("Missing name for the currency");
-                } else if (newRateStr.equals("")) {
-                    errorLabel.setText("Missing Rate");
-                } else {
-                    try {
-                        // if
-                        double inputRateValue = Double.parseDouble(newRateStr);
-                        // 7.2
-                        this.controller.startInsertComputation(newAbbrStr.toUpperCase(), newCurrencyStr, inputRateValue);
-                        Stage currentStage = (Stage) addButton.getScene().getWindow();
-                        currentStage.close();
-                    } catch (NullPointerException exception) {
-                        errorLabel.setText("Missing number");
-                    } catch (NumberFormatException exception) {
-                        errorLabel.setText("Please type number to your rate");
+                addButton.setOnAction(e -> {
+                    String newAbbrStr = newAbbrInput.getText();
+                    String newCurrencyStr = newNameInput.getText();
+                    String newRateStr = newRateInput.getText();
+
+                    errorLabel.setText("");
+                    if (newAbbrStr.equals("")) {
+                        errorLabel.setText("Missing Currency abbreviation");
+                    } else if (!checkCurrencyNameLength(newAbbrStr)) {
+                        errorLabel.setText("currency abbreviation must have 3 characters");
+                    } else if (!checkAllAlphebets(newAbbrStr)) {
+                        errorLabel.setText("currency abbreviation must all be alphabet");
+                    } else if (newCurrencyStr.equals("")) {
+                        errorLabel.setText("Missing name for the currency");
+                    } else if (newRateStr.equals("")) {
+                        errorLabel.setText("Missing Rate");
+                    } else {
+                        try {
+                            // if
+                            double inputRateValue = Double.parseDouble(newRateStr);
+                            // 7.2
+                            this.controller.startInsertComputation(newAbbrStr.toUpperCase(), newCurrencyStr, inputRateValue);
+                            Stage currentStage = (Stage) addButton.getScene().getWindow();
+                            currentStage.close();
+                        } catch (NullPointerException exception) {
+                            errorLabel.setText("Missing number");
+                        } catch (NumberFormatException exception) {
+                            errorLabel.setText("Please type number to your rate");
+                        }
                     }
-                }
 //
-            });
+                });
 
-            newCurrencyNameLayout.getChildren().addAll(newNameLabel, newNameInput);
-            newAbbrLayout.getChildren().addAll(newAbbrNameLabel, newAbbrInput);
-            newRateLayout.getChildren().addAll(newRateLabel, newRateInput);
-            addButtonLayout.getChildren().addAll(addButton, errorLabel);
+                newCurrencyNameLayout.getChildren().addAll(newNameLabel, newNameInput);
+                newAbbrLayout.getChildren().addAll(newAbbrNameLabel, newAbbrInput);
+                newRateLayout.getChildren().addAll(newRateLabel, newRateInput);
+                addButtonLayout.getChildren().addAll(addButton, errorLabel);
 
 //            center.getChildren().add(newCurrencyNameLayout);
-            center.getChildren().addAll(addLabel, newCurrencyNameLayout, newAbbrLayout, newRateLayout, addButtonLayout);
-            // set inset
-            Insets lineInsets = new Insets(0, 20, 0, 20);
-            Insets insets = new Insets(20, 40, 20, 40);
+                center.getChildren().addAll(addLabel, newCurrencyNameLayout, newAbbrLayout, newRateLayout, addButtonLayout);
+                // set inset
+                Insets lineInsets = new Insets(0, 20, 0, 20);
+                Insets insets = new Insets(20, 40, 20, 40);
 
-            VBox.setMargin(addLabel, insets);
-            VBox.setMargin(newCurrencyNameLayout, insets);
-            VBox.setMargin(newAbbrLayout, insets);
-            VBox.setMargin(newRateLayout, insets);
-            VBox.setMargin(addButtonLayout, insets);
+                VBox.setMargin(addLabel, insets);
+                VBox.setMargin(newCurrencyNameLayout, insets);
+                VBox.setMargin(newAbbrLayout, insets);
+                VBox.setMargin(newRateLayout, insets);
+                VBox.setMargin(addButtonLayout, insets);
 
-            HBox.setMargin(newNameLabel, lineInsets);
-            HBox.setMargin(newNameInput, lineInsets);
-            HBox.setHgrow(newNameInput, Priority.ALWAYS);
+                HBox.setMargin(newNameLabel, lineInsets);
+                HBox.setMargin(newNameInput, lineInsets);
+                HBox.setHgrow(newNameInput, Priority.ALWAYS);
 
-            HBox.setMargin(newAbbrNameLabel, lineInsets);
-            HBox.setMargin(newAbbrInput, lineInsets);
-            HBox.setHgrow(newAbbrInput, Priority.ALWAYS);
+                HBox.setMargin(newAbbrNameLabel, lineInsets);
+                HBox.setMargin(newAbbrInput, lineInsets);
+                HBox.setHgrow(newAbbrInput, Priority.ALWAYS);
 
-            HBox.setMargin(newRateLabel, lineInsets);
+                HBox.setMargin(newRateLabel, lineInsets);
 //            HBox.setMargin(newRateInput,lineInsets);
-            HBox.setMargin(newRateInput, lineInsets);
-            HBox.setHgrow(newRateInput, Priority.ALWAYS);
+                HBox.setMargin(newRateInput, lineInsets);
+                HBox.setHgrow(newRateInput, Priority.ALWAYS);
 
-            HBox.setMargin(addButton, lineInsets);
-            HBox.setMargin(errorLabel, lineInsets);
+                HBox.setMargin(addButton, lineInsets);
+                HBox.setMargin(errorLabel, lineInsets);
 
-            newNameInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
-            newAbbrInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
+                newNameInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
+                newAbbrInput.prefWidthProperty().bind(newRateInput.prefWidthProperty());
 
-            addRoot.setCenter(center);
+                addRoot.setCenter(center);
 
-            final double initialAddWidth = 500;
-            final double initialAddHeight = 350;
-            Stage addStage = new Stage();
-            Scene addScene = new Scene(addRoot, initialAddWidth, initialAddHeight);
-            addStage.setScene(addScene);
-            addStage.setTitle(addTitle);
-            addStage.showAndWait();
+                final double initialAddWidth = 500;
+                final double initialAddHeight = 350;
+                Stage addStage = new Stage();
+                Scene addScene = new Scene(addRoot, initialAddWidth, initialAddHeight);
+                addStage.setScene(addScene);
+                addStage.setTitle(addTitle);
+                addStage.showAndWait();
+            }
+        });
+
+        transactionButton.setOnAction(event -> {
+            final String title = "Transaction List";
+            rowCount = 0;
+            System.out.println("Showing transaction list");
+
+            // layout
+            BorderPane transactionRoot = new BorderPane();
+            StackPane topLayout = new StackPane();
+            transactionTableView = new TableView();
+            VBox middleLayout = new VBox(transactionTableView);
+
+            // components
+            Label titleLabel = new Label(title);
+
+
+            // assemble
+            transactionRoot.setTop(topLayout);
+            topLayout.getChildren().addAll(titleLabel);
+            topLayout.setAlignment(Pos.CENTER);
+
+            transactionRoot.setCenter(middleLayout);
+
+            TableColumn<Transaction, String> column1 =
+                    new TableColumn<>("Base Currency");
+
+            column1.setCellValueFactory(
+                    new PropertyValueFactory<>("baseCurrency"));
+
+
+            TableColumn<Transaction, String> column2 =
+                    new TableColumn<>("Convert Currency");
+
+            column2.setCellValueFactory(
+                    new PropertyValueFactory<>("toCurrency"));
+
+            TableColumn<Transaction, String> column3 =
+                    new TableColumn<>("Amount");
+            column3.setCellValueFactory(
+                    new PropertyValueFactory<>("amount"));
+
+            //add table header
+            transactionTableView.getColumns().add(column1);
+            transactionTableView.getColumns().add(column2);
+            transactionTableView.getColumns().add(column3);
+
+            this.controller.startDisplayTransactionCalculation();
+
+            Platform.runLater(() -> {
+                try {
+                    Thread.sleep(50);
+                    final double oneRowHeight = 20;
+                    final double initialAddWidth = 280;
+                    final double initialAddHeight = 300;
+                    // cannot make a dynamic height adjustment
+//                    final double initialAddHeight = 70 + (this.rowCount * oneRowHeight);
+
+                    Scene transactionScene = new Scene(transactionRoot, initialAddWidth, initialAddHeight);
+                    Stage transactionStage = new Stage();
+                    transactionStage.setScene(transactionScene);
+                    transactionStage.setTitle(title);
+                    transactionStage.showAndWait();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+
         });
 
 
+        optionsLayout.getChildren().addAll(this.addButton, this.transactionButton);
+
         instructionLayout.getChildren().add(this.instructionLabel);
 
-        baseCurrencyLayout.getChildren().
-                add(this.baseCurrencyLabel);
-        baseCurrencyLayout.getChildren().
-                add(baseCurrencyAbbrNameChoiceBox);
-        baseCurrencyLayout.getChildren().add(baseCurrencyNameLabel);
-        baseCurrencyLayout.getChildren().
-                add(valueInput);
-        baseCurrencyLayout.getChildren().
-                add(this.convertButton);
+        baseCurrencyLayout.getChildren().addAll(
+                this.baseCurrencyLabel,
+                this.baseCurrencyAbbrNameChoiceBox,
+                this.baseCurrencyNameLabel,
+                this.valueInput,
+                this.convertButton
+        );
 
-        toCurrencyLayout.getChildren().
-                add(this.toCurrencyLabel);
-        toCurrencyLayout.getChildren().
-                add(toCurrencyAbbrNameChoiceBox);
-        toCurrencyLayout.getChildren().add(toCurrencyNameLabel);
-        toCurrencyLayout.getChildren().
-                add(convertedValueOutput);
-        toCurrencyLayout.getChildren().add(rateLabel);
-        left.getChildren().add(instructionLayout);
-        //add button
-        left.getChildren().add(addButton);
 
-        left.getChildren().
-                add(baseCurrencyLayout);
-        left.getChildren().
-                add(toCurrencyLayout);
+        toCurrencyLayout.getChildren().addAll(
+                this.toCurrencyLabel,
+                this.toCurrencyAbbrNameChoiceBox,
+                this.toCurrencyNameLabel,
+                this.convertedValueOutput,
+                this.rateLabel
+        );
+
+
+        left.getChildren().addAll(
+                this.instructionLayout,
+                this.optionsLayout,
+                this.baseCurrencyLayout,
+                this.toCurrencyLayout
+        );
+
         root.setLeft(left);
 
 
@@ -299,7 +391,9 @@ public class CurrencyGUI extends Application {
         VBox.setMargin(instructionLayout, insets);
         HBox.setMargin(instructionLabel, lineInsets);
 
-        VBox.setMargin(addButton, insets);
+        VBox.setMargin(optionsLayout, insets);
+        HBox.setMargin(addButton, lineInsets);
+        HBox.setMargin(transactionButton, lineInsets);
 
         VBox.setMargin(baseCurrencyLayout, insets);
         HBox.setMargin(baseCurrencyLabel, lineInsets);
@@ -323,11 +417,27 @@ public class CurrencyGUI extends Application {
         stage.show();
     }
 
+    public TableView getTransactionTableView() {
+        return this.transactionTableView;
+    }
+
+    public void setTransactionTableView(TableView newTransactionTableView) {
+        this.transactionTableView = newTransactionTableView;
+    }
+
+    public void displayTransactionList(List<Transaction> transactions) {
+        int count = 0;
+        this.transactionTableView.getItems().clear();
+        for (Transaction transaction : transactions) {
+            count++;
+            this.transactionTableView.getItems().add(transaction);
+        }
+        this.rowCount = count;
+    }
 
     public void displayConvertedResult(double result, String baseCurrencyStr, String toCurrencyStr) {
         convertedValueOutput.setText(String.format("%.2f", result));
 //        rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
-
     }
 
     public void displayConvertedRateResult(double resultOneUnit, String baseCurrencyStr, String toCurrencyStr) {
@@ -341,15 +451,10 @@ public class CurrencyGUI extends Application {
     public void displayNoDatabaseError() {
         if (databaseError) {
             rateLabel.setText("Cannot connect to database");
-
         }
-//        databaseError = true;
-//        Platform.runLater(() -> {
-//            rateLabel.setText("Cannot connect to database");
-//        });
     }
 
-    public void setDatabaseError(boolean state){
+    public void setDatabaseError(boolean state) {
         this.databaseError = state;
     }
 
@@ -388,7 +493,7 @@ public class CurrencyGUI extends Application {
         return currentBaseCurrencyStr;
     }
 
-    public void setCurrentBaseCurrencyStr(String string){
+    public void setCurrentBaseCurrencyStr(String string) {
         this.currentBaseCurrencyStr = string;
     }
 
@@ -396,12 +501,16 @@ public class CurrencyGUI extends Application {
         return currentToCurrencyStr;
     }
 
-    public void setCurrentToCurrencyStr(String string){
+    public void setInitilizeDatabase(boolean state) {
+        this.initilizeDatabase = state;
+    }
+
+    public void setCurrentToCurrencyStr(String string) {
         this.currentToCurrencyStr = string;
     }
 
-//    public
 
+    //    public
     @Override
     public void init() {
         this.rateLabel = new Label("");
