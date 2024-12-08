@@ -27,7 +27,8 @@ public class CurrencyGUI extends Application {
 
     //components
     private Label appLabel;
-    private Label instructionLabel;
+    private Label instructionLabel1;
+    private Label instructionLabel2;
     private Label baseCurrencyLabel;
     private Label toCurrencyLabel;
     private Label baseCurrencyNameLabel;
@@ -49,7 +50,8 @@ public class CurrencyGUI extends Application {
     StackPane topCenter;
     VBox left;
     HBox optionsLayout;
-    HBox instructionLayout;
+    HBox instructionLayout1;
+    HBox instructionLayout2;
     HBox baseCurrencyLayout;
     HBox toCurrencyLayout;
 
@@ -68,7 +70,8 @@ public class CurrencyGUI extends Application {
         this.root = new BorderPane();
 
         this.appLabel = new Label("Currency Converter");
-        this.instructionLabel = new Label("Choose the base currency and the currency that you want to convert to. Type the value and press convert");
+        this.instructionLabel1 = new Label("Choose the base currency and the currency that you want to convert to. Type the value and press convert");
+        this.instructionLabel2 = new Label("Please insert a Currency when the application starts.");
         this.baseCurrencyLabel = new Label("From Currency: ");
         this.toCurrencyLabel = new Label("To Currency: ");
         this.convertButton = new Button("Convert");
@@ -81,7 +84,8 @@ public class CurrencyGUI extends Application {
         // create layout componet and add layout
         this.left = new VBox();
         this.optionsLayout = new HBox();
-        this.instructionLayout = new HBox();
+        this.instructionLayout1 = new HBox();
+        this.instructionLayout2 = new HBox();
         this.baseCurrencyLayout = new HBox();
         this.toCurrencyLayout = new HBox();
 
@@ -175,9 +179,9 @@ public class CurrencyGUI extends Application {
 
         addButton.setOnAction(event -> {
 //            System.out.println("Add button clicked");
-            if (this.initilizeDatabase){
+            if (this.initilizeDatabase) {
 
-            String addTitle = "Add Currency";
+                String addTitle = "Add Currency";
                 Button addButton = new Button("Add New Currency");
                 Label addLabel = new Label("Add Currency:");
                 Label newNameLabel = new Label("Name:");
@@ -270,7 +274,7 @@ public class CurrencyGUI extends Application {
 
                 addRoot.setCenter(center);
 
-                final double initialAddWidth = 500;
+                final double initialAddWidth = 550;
                 final double initialAddHeight = 350;
                 Stage addStage = new Stage();
                 Scene addScene = new Scene(addRoot, initialAddWidth, initialAddHeight);
@@ -328,10 +332,7 @@ public class CurrencyGUI extends Application {
             this.controller.startDisplayTransactionCalculation();
 
             Platform.runLater(() -> {
-                try {
-                    Thread.sleep(50);
-                    final double oneRowHeight = 20;
-                    final double initialAddWidth = 280;
+                    final double initialAddWidth = 250;
                     final double initialAddHeight = 300;
                     // cannot make a dynamic height adjustment
 //                    final double initialAddHeight = 70 + (this.rowCount * oneRowHeight);
@@ -341,10 +342,13 @@ public class CurrencyGUI extends Application {
                     transactionStage.setScene(transactionScene);
                     transactionStage.setTitle(title);
                     transactionStage.showAndWait();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(50);
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             });
 
 
@@ -353,7 +357,9 @@ public class CurrencyGUI extends Application {
 
         optionsLayout.getChildren().addAll(this.addButton, this.transactionButton);
 
-        instructionLayout.getChildren().add(this.instructionLabel);
+        instructionLayout1.getChildren().add(this.instructionLabel1);
+
+        instructionLayout2.getChildren().add(this.instructionLabel2);
 
         baseCurrencyLayout.getChildren().addAll(
                 this.baseCurrencyLabel,
@@ -374,7 +380,8 @@ public class CurrencyGUI extends Application {
 
 
         left.getChildren().addAll(
-                this.instructionLayout,
+                this.instructionLayout1,
+                this.instructionLayout2,
                 this.optionsLayout,
                 this.baseCurrencyLayout,
                 this.toCurrencyLayout
@@ -388,8 +395,11 @@ public class CurrencyGUI extends Application {
         Insets insets = new Insets(20, 40, 20, 40);
 //        toCurrencyAbbrNameChoiceBox.setMar
         StackPane.setMargin(topCenter, insets);
-        VBox.setMargin(instructionLayout, insets);
-        HBox.setMargin(instructionLabel, lineInsets);
+        VBox.setMargin(instructionLayout1, insets);
+        HBox.setMargin(instructionLabel1, lineInsets);
+
+        VBox.setMargin(instructionLayout2, insets);
+        HBox.setMargin(instructionLabel2, lineInsets);
 
         VBox.setMargin(optionsLayout, insets);
         HBox.setMargin(addButton, lineInsets);
