@@ -332,16 +332,16 @@ public class CurrencyGUI extends Application {
             this.controller.startDisplayTransactionCalculation();
 
             Platform.runLater(() -> {
-                    final double initialAddWidth = 250;
-                    final double initialAddHeight = 300;
-                    // cannot make a dynamic height adjustment
+                final double initialAddWidth = 250;
+                final double initialAddHeight = 300;
+                // cannot make a dynamic height adjustment
 //                    final double initialAddHeight = 70 + (this.rowCount * oneRowHeight);
 
-                    Scene transactionScene = new Scene(transactionRoot, initialAddWidth, initialAddHeight);
-                    Stage transactionStage = new Stage();
-                    transactionStage.setScene(transactionScene);
-                    transactionStage.setTitle(title);
-                    transactionStage.showAndWait();
+                Scene transactionScene = new Scene(transactionRoot, initialAddWidth, initialAddHeight);
+                Stage transactionStage = new Stage();
+                transactionStage.setScene(transactionScene);
+                transactionStage.setTitle(title);
+                transactionStage.showAndWait();
 //                try {
 //                    Thread.sleep(50);
 //
@@ -445,13 +445,35 @@ public class CurrencyGUI extends Application {
         this.rowCount = count;
     }
 
+    public void platformDisplayTransactionList(List<Transaction> transactions) {
+        Platform.runLater(() -> {
+            this.displayTransactionList(transactions);
+        });
+    }
+
     public void displayConvertedResult(double result, String baseCurrencyStr, String toCurrencyStr) {
         convertedValueOutput.setText(String.format("%.2f", result));
 //        rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
     }
 
+    public void platformStartConvertComputation(double result, String baseCurrencyStr, String toCurrencyStr, double resultOneUnit) {
+        Platform.runLater(() -> {
+                    this.displayConvertedResult(result, baseCurrencyStr, toCurrencyStr);
+                    this.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+                }
+        );
+    }
+
     public void displayConvertedRateResult(double resultOneUnit, String baseCurrencyStr, String toCurrencyStr) {
         rateLabel.setText("1 " + baseCurrencyStr + " = " + String.format("%.2f", resultOneUnit) + " " + toCurrencyStr);
+    }
+
+    public void platformStartUnitConvertComputation(double resultOneUnit, String baseCurrencyStr, String toCurrencyStr, String baseCurrencyName, String toCurrencyName) {
+        Platform.runLater(() -> {
+            this.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+            this.displayNewCurrencyNameLabel(baseCurrencyName, toCurrencyName);
+
+        });
     }
 
     public void setEmptyDatabase() {
@@ -462,6 +484,20 @@ public class CurrencyGUI extends Application {
         if (databaseError) {
             rateLabel.setText("Cannot connect to database");
         }
+    }
+    // update dropbox in view with new currencyList
+
+    public void platformDisplayNoDatabaseError() {
+        Platform.runLater(() -> {
+            this.displayNoDatabaseError();
+        });
+    }
+    public void platformInitiateError(){
+        Platform.runLater(() -> {
+            this.setInitilizeDatabase(true);
+            this.setDatabaseError(true);
+            this.displayNoDatabaseError();
+        });
     }
 
     public void setDatabaseError(boolean state) {
@@ -483,6 +519,13 @@ public class CurrencyGUI extends Application {
         baseCurrencyAbbrNameChoiceBox.setValue(currentBaseCurrencyStr);
         toCurrencyAbbrNameChoiceBox.setValue(currentToCurrencyStr);
 
+    }
+
+    public void platformUpdateChoiceBoxes() {
+        Platform.runLater(() -> {
+            this.updateChoiceBoxes();
+//                this.gui.displayConvertedRateResult();
+        });
     }
 
     public void displayNewCurrencyNameLabel(String baseCurrencyName, String toCurrencyLabelName) {
@@ -517,6 +560,16 @@ public class CurrencyGUI extends Application {
 
     public void setCurrentToCurrencyStr(String string) {
         this.currentToCurrencyStr = string;
+    }
+
+    public void platformInitiate(double resultOneUnit, String currentBaseStr, String currentToStr, String baseCurrencyName, String toCurrencyname){
+        Platform.runLater(() -> {
+            this.setInitilizeDatabase(true);
+            this.setDatabaseError(false);
+            this.displayConvertedRateResult(resultOneUnit, currentBaseStr, currentToStr);
+            this.displayNewCurrencyNameLabel(baseCurrencyName, toCurrencyname);
+            this.updateChoiceBoxes();
+        });
     }
 
 

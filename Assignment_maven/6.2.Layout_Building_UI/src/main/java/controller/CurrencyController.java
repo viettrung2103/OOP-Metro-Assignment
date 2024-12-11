@@ -26,10 +26,9 @@ public class CurrencyController {
         this.currencyDao = new CurrencyDao();
         this.transactionDao = new TransactionDao();
         this.currencyApp = new CurrencyApp();
-
         this.initiate();
-
     }
+
 
     public void initiate() {
 //        HashMap<String, Currency> currencyList = (HashMap<String, Currency>) this.currencyDao.getAllCurrencies();
@@ -47,20 +46,23 @@ public class CurrencyController {
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
 
                 System.out.println("current: " + currentBaseStr + " to: " + currentToStr);
-                Platform.runLater(() -> {
-                    this.gui.setInitilizeDatabase(true);
-                    this.gui.setDatabaseError(false);
-                    this.gui.displayConvertedRateResult(resultOneUnit, currentBaseStr, currentToStr);
-                    this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
-                    this.gui.updateChoiceBoxes();
-                });
+//                 this.gui.platFormInitate(resultOneUnit,currentBaseStr,currentToStr)
+//                Platform.runLater(() -> {
+//                    this.gui.setInitilizeDatabase(true);
+//                    this.gui.setDatabaseError(false);
+//                    this.gui.displayConvertedRateResult(resultOneUnit, currentBaseStr, currentToStr);
+//                    this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
+//                    this.gui.updateChoiceBoxes();
+//                });
+                this.gui.platformInitiate(resultOneUnit, currentBaseStr, currentToStr, baseCurrency.getName(), toCurrency.getName());
             } catch (Exception e) {
 
-                Platform.runLater(() -> {
-                    this.gui.setInitilizeDatabase(true);
-                    this.gui.setDatabaseError(true);
-                    this.gui.displayNoDatabaseError();
-                });
+//                Platform.runLater(() -> {
+//                    this.gui.setInitilizeDatabase(true);
+//                    this.gui.setDatabaseError(true);
+//                    this.gui.displayNoDatabaseError();
+//                });
+                this.gui.platformInitiateError();
             }
 
         }).start();
@@ -104,11 +106,12 @@ public class CurrencyController {
 
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
                 System.out.println(inputValue + " from " + baseCurrency + " to " + toCurrency + ": " + result);
-                Platform.runLater(() -> {
-                            this.gui.displayConvertedResult(result, baseCurrencyStr, toCurrencyStr);
-                            this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
-                        }
-                );
+//                Platform.runLater(() -> {
+//                            this.gui.displayConvertedResult(result, baseCurrencyStr, toCurrencyStr);
+//                            this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+//                        }
+//                );
+                this.gui.platformStartConvertComputation(result, baseCurrencyStr, toCurrencyStr, resultOneUnit);
             } catch (Exception e) {
                 Platform.runLater(() -> {
                     this.gui.displayNoDatabaseError();
@@ -127,15 +130,17 @@ public class CurrencyController {
                 this.gui.setCurrentBaseCurrencyStr(baseCurrencyStr);
                 this.gui.setCurrentToCurrencyStr(toCurrencyStr);
                 double resultOneUnit = baseCurrency.convert(1, toCurrency);
-                Platform.runLater(() -> {
-                    this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
-                    this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
-
-                });
+//                Platform.runLater(() -> {
+//                    this.gui.displayConvertedRateResult(resultOneUnit, baseCurrencyStr, toCurrencyStr);
+//                    this.gui.displayNewCurrencyNameLabel(baseCurrency.getName(), toCurrency.getName());
+//
+//                });
+                this.gui.platformStartUnitConvertComputation(resultOneUnit, baseCurrencyStr, toCurrencyStr, baseCurrency.getName(), toCurrency.getName());
             } catch (Exception e) {
-                Platform.runLater(() -> {
-                    this.gui.displayNoDatabaseError();
-                });
+                this.gui.platformDisplayNoDatabaseError();
+//                Platform.runLater(() -> {
+//                    this.gui.displayNoDatabaseError();
+//                });
 //                this.gui.displayNoDatabaseError();
             }
         }).start();
@@ -159,10 +164,11 @@ public class CurrencyController {
             // update currencyList in model
             this.currencyApp.setCurrencyList(updateList);
             // update dropbox in view with new currencyList
-            Platform.runLater(() -> {
-                this.gui.updateChoiceBoxes();
-//                this.gui.displayConvertedRateResult();
-            });
+//            Platform.runLater(() -> {
+//                this.gui.updateChoiceBoxes();
+////                this.gui.displayConvertedRateResult();
+//            });
+            this.gui.platformUpdateChoiceBoxes();
 
             this.startUnitConvertComputation(this.gui.getCurrentBaseCurrencyStr(), this.gui.getCurrentToCurrencyStr());
 
@@ -174,14 +180,16 @@ public class CurrencyController {
             try {
                 List<Transaction> transactionList = transactionDao.findAll();
 //                TableView<Transaction> tableView = this.gui.getTransactionTableView();
-                System.out.println(transactionList);
-                Platform.runLater(() -> {
-                    this.gui.displayTransactionList(transactionList);
-                });
+//                System.out.println(transactionList);
+//                Platform.runLater(() -> {
+//                    this.gui.displayTransactionList(transactionList);
+//                });
+                this.gui.platformDisplayTransactionList(transactionList);
             } catch (Exception e) {
-                Platform.runLater(() -> {
-                    this.gui.displayNoDatabaseError();
-                });
+//                Platform.runLater(() -> {
+//                    this.gui.displayNoDatabaseError();
+//                });
+                this.gui.platformDisplayNoDatabaseError();
             }
 
         }).start();
