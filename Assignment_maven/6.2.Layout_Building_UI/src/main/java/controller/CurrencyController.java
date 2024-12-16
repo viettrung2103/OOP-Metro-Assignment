@@ -113,9 +113,10 @@ public class CurrencyController {
 //                );
                 this.gui.platformStartConvertComputation(result, baseCurrencyStr, toCurrencyStr, resultOneUnit);
             } catch (Exception e) {
-                Platform.runLater(() -> {
-                    this.gui.displayNoDatabaseError();
-                });
+                this.gui.platformDisplayNoDatabaseError();
+//                Platform.runLater(() -> {
+//                    this.gui.displayNoDatabaseError();
+//                });
 //                this.gui.displayNoDatabaseError();
             }
         }
